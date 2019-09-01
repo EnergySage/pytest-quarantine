@@ -1,0 +1,10 @@
+site_name: pytest-quarantine
+site_description: A plugin for pytest to manage expected test failures
+site_author: Brian Rutledge
+
+theme: readthedocs
+
+repo_url: https://github.com/bhrutledge/pytest-quarantine
+
+pages:
+- Home: index.md
