@@ -2,8 +2,8 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/pytest-quarantine.svg)](https://pypi.org/project/pytest-quarantine)
 [![Python versions](https://img.shields.io/pypi/pyversions/pytest-quarantine.svg)](https://pypi.org/project/pytest-quarantine)
-[![Build Status](https://travis-ci.org/bhrutledge/pytest-quarantine.svg?branch=master)](https://travis-ci.org/bhrutledge/pytest-quarantine)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/bhrutledge/pytest-quarantine?branch=master)](https://ci.appveyor.com/project/bhrutledge/pytest-quarantine/branch/master)
+[![Linux Build Status](https://travis-ci.com/bhrutledge/pytest-quarantine.svg?branch=master)](https://travis-ci.com/bhrutledge/pytest-quarantine)
+[![Windows Build Status](https://ci.appveyor.com/api/projects/status/a57g3ifrcureg260/branch/master?svg=true)](https://ci.appveyor.com/project/bhrutledge/pytest-quarantine/branch/master)
 
 A plugin for [pytest](https://github.com/pytest-dev/pytest) to manage expected test failures.
 
