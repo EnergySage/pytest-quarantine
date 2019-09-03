@@ -4,6 +4,7 @@ import pytest
 
 
 def pytest_addoption(parser):
+    """Add the `--foo` command-line option."""
     group = parser.getgroup("quarantine")
     group.addoption(
         "--foo",
@@ -18,4 +19,5 @@ def pytest_addoption(parser):
 
 @pytest.fixture
 def bar(request):
+    """Return the value of the `foo` option."""
     return request.config.option.dest_foo

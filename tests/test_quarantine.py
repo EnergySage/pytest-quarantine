@@ -3,7 +3,6 @@
 
 def test_bar_fixture(testdir):
     """Make sure that pytest accepts our fixture."""
-
     # create a temporary pytest test module
     testdir.makepyfile(
         """
@@ -23,6 +22,7 @@ def test_bar_fixture(testdir):
 
 
 def test_help_message(testdir):
+    """Make sure there's help text for `--foo`."""
     result = testdir.runpytest("--help")
     # fnmatch_lines does an assertion internally
     result.stdout.fnmatch_lines(
@@ -31,6 +31,7 @@ def test_help_message(testdir):
 
 
 def test_hello_ini_setting(testdir):
+    """Demonstrate testing configuration files."""
     testdir.makeini(
         """
         [pytest]
