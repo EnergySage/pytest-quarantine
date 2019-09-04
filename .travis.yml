@@ -30,6 +30,7 @@ before_cache:
 cache:
   directories:
     - $HOME/.cache/pip
+    - $HOME/.cache/pre-commit
 
 after_success:
   - codecov
