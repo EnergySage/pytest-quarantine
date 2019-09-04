@@ -1,6 +1,10 @@
 # What Python version is installed where:
 # http://www.appveyor.com/docs/installed-software#python
 
+branches:
+  only:
+    - master
+
 environment:
   matrix:
     - PYTHON: "C:\\Python27"
