@@ -7,6 +7,8 @@ branches:
 
 matrix:
   include:
+    - python: 3.7
+      env: TOX_ENV=check
     - python: 2.7
       env: TOX_ENV=py27
     - python: 3.5
@@ -15,8 +17,6 @@ matrix:
       env: TOX_ENV=py36
     - python: 3.7
       env: TOX_ENV=py37
-    - python: 3.7
-      env: TOX_ENV=check
 
 install:
   - pip install tox codecov
