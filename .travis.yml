@@ -1,9 +1,8 @@
-sudo: false
-language: python
-
 branches:
   only:
     - master
+
+language: python
 
 matrix:
   include:
@@ -19,6 +18,7 @@ matrix:
       env: TOX_ENV=py37
 
 install:
+  - pip list
   - pip install tox codecov
 
 script:
