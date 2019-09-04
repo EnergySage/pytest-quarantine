@@ -3,30 +3,30 @@
 
 environment:
   matrix:
-    # TODO: Fix these failing builds
-    # - PYTHON: "C:\\Python27"
-    #   TOX_ENV: "py27"
+    - PYTHON: "C:\\Python27"
+      TOX_ENV: "py27"
 
-    # - PYTHON: "C:\\Python34"
-    #   TOX_ENV: "py34"
+    - PYTHON: "C:\\Python34"
+      TOX_ENV: "py34"
 
-    # - PYTHON: "C:\\Python35"
-    #   TOX_ENV: "py35"
+    - PYTHON: "C:\\Python35"
+      TOX_ENV: "py35"
 
-    # - PYTHON: "C:\\Python36"
-    #   TOX_ENV: "py36"
+    - PYTHON: "C:\\Python36"
+      TOX_ENV: "py36"
 
     - PYTHON: "C:\\Python37"
       TOX_ENV: "py37"
 
 init:
+  # Check that we have the expected version and architecture for Python
   - "%PYTHON%/python -V"
   - '%PYTHON%/python -c "import struct;print(8 * struct.calcsize(''P''))"'
 
 install:
-  - "%PYTHON%/Scripts/easy_install -U pip"
-  - "%PYTHON%/Scripts/pip install tox"
-  - "%PYTHON%/Scripts/pip install wheel"
+  # Use `python -m pip` to avoid `Access is denied` error
+  - "%PYTHON%/python -m pip list"
+  - "%PYTHON%/python -m pip install -U setuptools pip virtualenv tox wheel"
 
 build: false # Not a C# project, build stuff at the test step instead.
 
