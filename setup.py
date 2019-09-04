@@ -12,7 +12,6 @@ def read(fname):
 
 setup(
     name="pytest-quarantine",
-    version="0.1.0.dev2",
     author="Brian Rutledge",
     author_email="bhrutledge@gmail.com",
     maintainer="Brian Rutledge",
@@ -23,6 +22,8 @@ setup(
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     py_modules=["pytest_quarantine"],
+    use_scm_version=True,
+    setup_requires=["setuptools_scm"],
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
     install_requires=["pytest>=4.6"],
     classifiers=[
