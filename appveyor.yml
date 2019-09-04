@@ -19,22 +19,23 @@ environment:
       TOX_ENV: "py37"
 
 init:
+  - SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
   # Check that we have the expected version and architecture for Python
-  - "%PYTHON%/python -V"
-  - '%PYTHON%/python -c "import struct;print(8 * struct.calcsize(''P''))"'
+  - python -V
+  - python -c "import struct;print(8 * struct.calcsize('P'))"
 
 install:
   # Use `python -m pip` to avoid `Access is denied` error
-  - "%PYTHON%/python -m pip list"
-  - "%PYTHON%/python -m pip install -U setuptools pip virtualenv tox wheel"
+  - python -m pip list
+  - python -m pip install -U setuptools pip virtualenv tox wheel
 
 build: false # Not a C# project, build stuff at the test step instead.
 
 test_script:
-  - "%PYTHON%/Scripts/tox -e %TOX_ENV%"
+  - tox -e %TOX_ENV%
 
 after_test:
-  - "%PYTHON%/python setup.py bdist_wheel"
+  - python setup.py bdist_wheel
   - ps: "ls dist"
 
 artifacts:
