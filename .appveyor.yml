@@ -1,0 +1,41 @@
+# What Python version is installed where:
+# http://www.appveyor.com/docs/installed-software#python
+
+environment:
+  matrix:
+    - PYTHON: "C:\\Python27"
+      TOX_ENV: "py27"
+
+    - PYTHON: "C:\\Python34"
+      TOX_ENV: "py34"
+
+    - PYTHON: "C:\\Python35"
+      TOX_ENV: "py35"
+
+    - PYTHON: "C:\\Python36"
+      TOX_ENV: "py36"
+
+    - PYTHON: "C:\\Python37"
+      TOX_ENV: "py37"
+
+init:
+  - SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
+  # Check that we have the expected version and architecture for Python
+  - python -V
+  - python -c "import struct;print(8 * struct.calcsize('P'))"
+
+install:
+  # Use `python -m pip` to avoid `Access is denied` error
+  - python -m pip list
+  - python -m pip install -U setuptools pip virtualenv tox wheel
+
+build: false # Not a C# project, build stuff at the test step instead.
+
+test_script:
+  - tox -e %TOX_ENV%
+
+after_test:
+  - python setup.py bdist_wheel
+
+artifacts:
+  - path: dist\*
