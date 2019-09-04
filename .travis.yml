@@ -7,22 +7,22 @@ language: python
 matrix:
   include:
     - python: 3.7
-      env: TOX_ENV=check
+      env: TOXENV=check
     - python: 2.7
-      env: TOX_ENV=py27
+      env: TOXENV=py27
     - python: 3.5
-      env: TOX_ENV=py35
+      env: TOXENV=py35
     - python: 3.6
-      env: TOX_ENV=py36
+      env: TOXENV=py36
     - python: 3.7
-      env: TOX_ENV=py37
+      env: TOXENV=py37
 
 install:
   - pip list
   - pip install tox codecov
 
 script:
-  - tox -e $TOX_ENV
+  - tox
 
 before_cache:
   - rm -rf $HOME/.cache/pip/log

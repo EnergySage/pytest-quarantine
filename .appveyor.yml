@@ -5,16 +5,16 @@ branches:
 environment:
   matrix:
     - PYTHON: "C:\\Python27"
-      TOX_ENV: "py27"
+      TOXENV: "py27"
 
     - PYTHON: "C:\\Python35"
-      TOX_ENV: "py35"
+      TOXENV: "py35"
 
     - PYTHON: "C:\\Python36"
-      TOX_ENV: "py36"
+      TOXENV: "py36"
 
     - PYTHON: "C:\\Python37"
-      TOX_ENV: "py37"
+      TOXENV: "py37"
 
 init:
   - SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
@@ -30,7 +30,7 @@ install:
 build: false # Not a C# project, build stuff at the test step instead.
 
 test_script:
-  - tox -e %TOX_ENV%
+  - tox
 
 after_test:
   - python setup.py bdist_wheel
