@@ -12,7 +12,7 @@ def read(fname):
 
 setup(
     name="pytest-quarantine",
-    version="0.1.0.dev1",
+    version="0.1.0.dev2",
     author="Brian Rutledge",
     author_email="bhrutledge@gmail.com",
     maintainer="Brian Rutledge",
