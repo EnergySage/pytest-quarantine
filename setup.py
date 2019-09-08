@@ -21,6 +21,7 @@ setup(
     description="A plugin for pytest to manage expected test failures",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
+    package_dir={"": "src"},
     py_modules=["pytest_quarantine"],
     use_scm_version=True,
     setup_requires=["setuptools_scm"],
