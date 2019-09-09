@@ -19,7 +19,7 @@ matrix:
 
 install:
   - pip list
-  - pip install tox codecov
+  - pip install -U setuptools pip virtualenv tox codecov
 
 script:
   - tox
