@@ -5,16 +5,11 @@ branches:
 environment:
   matrix:
     - PYTHON: "C:\\Python27"
-      TOXENV: "py27"
-
     - PYTHON: "C:\\Python35"
-      TOXENV: "py35"
-
     - PYTHON: "C:\\Python36"
-      TOXENV: "py36"
-
     - PYTHON: "C:\\Python37"
-      TOXENV: "py37"
+
+  TOXENV: "py"
 
 init:
   - SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%
