@@ -27,6 +27,8 @@ script:
   - tox
 
 before_cache:
+  - ls -1 $HOME/.cache/pip
+  - du -h -d1 $HOME/.cache/pip
   - rm -rf $HOME/.cache/pip/log
 
 cache:
