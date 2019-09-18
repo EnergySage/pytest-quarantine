@@ -30,4 +30,6 @@ build: false
 test_script:
   - tox
 
-# TODO: https://www.appveyor.com/docs/build-cache/ ala .travis.yml
+cache:
+  # Speed up future runs by caching installed packages
+  - '%LOCALAPPDATA%\pip\Cache'
