@@ -23,7 +23,6 @@ install:
   # Using `python -m pip` to avoid `Access is denied` error
   - python -m pip list
   - python -m pip install -U setuptools pip virtualenv tox
-  - dir '%LOCALAPPDATA%\pip\Cache'
 
  # Not a C# project, build stuff at the test step instead
 build: false
@@ -33,4 +32,5 @@ test_script:
 
 cache:
   # Speed up future runs by caching installed packages
+  # TODO: Might want to periodically clean this up
   - '%LOCALAPPDATA%\pip\Cache'
