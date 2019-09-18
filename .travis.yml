@@ -18,6 +18,8 @@ matrix:
       env: TOXENV=check
 
 install:
+  # Check tooling versions and upgrade to latest
+  # TODO: It's probably safer to pin the versions
   - pip list
   - pip install -U setuptools pip virtualenv tox codecov
 
@@ -29,6 +31,7 @@ before_cache:
 
 cache:
   directories:
+    # Speed up future runs by caching installed packages
     - $HOME/.cache/pip
     - $HOME/.cache/pre-commit
 

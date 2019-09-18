@@ -18,17 +18,16 @@ init:
   - python -c "import struct;print(8 * struct.calcsize('P'))"
 
 install:
-  # Use `python -m pip` to avoid `Access is denied` error
+  # Check tooling versions and upgrade to latest
+  # TODO: It's probably safer to pin the versions
+  # Using `python -m pip` to avoid `Access is denied` error
   - python -m pip list
-  - python -m pip install -U setuptools pip virtualenv tox wheel
+  - python -m pip install -U setuptools pip virtualenv tox
 
-build: false # Not a C# project, build stuff at the test step instead.
+ # Not a C# project, build stuff at the test step instead
+build: false
 
 test_script:
   - tox
 
-after_test:
-  - python setup.py bdist_wheel
-
-artifacts:
-  - path: dist\*
+# TODO: https://www.appveyor.com/docs/build-cache/ ala .travis.yml
