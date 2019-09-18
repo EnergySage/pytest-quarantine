@@ -26,12 +26,10 @@ install:
 script:
   - tox
 
-before_cache:
-  - rm -rf $HOME/.cache/pip/log
-
 cache:
   directories:
     # Speed up future runs by caching installed packages
+    # TODO: Might want to periodically clean this up
     - $HOME/.cache/pip
     - $HOME/.cache/pre-commit
 
