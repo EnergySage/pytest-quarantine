@@ -14,14 +14,10 @@ repos:
     rev: 19.3b0
     hooks:
       - id: black
-  - repo: https://github.com/asottile/seed-isort-config
-    rev: v1.9.3
+  - repo: https://github.com/asottile/reorder_python_imports
+    rev: v1.7.0
     hooks:
-      - id: seed-isort-config
-  - repo: https://github.com/timothycrosley/isort
-    rev: 4.3.21
-    hooks:
-      - id: isort
+      - id: reorder-python-imports
   - repo: https://gitlab.com/pycqa/flake8
     rev: 3.7.8
     hooks:
