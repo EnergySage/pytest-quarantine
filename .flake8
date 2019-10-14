@@ -1,0 +1,5 @@
+[flake8]
+# Matching black's default
+max-line-length = 88
+# TODO: Change to extend-exclude when 3.8.0 is released
+exclude = .svn,CVS,.bzr,.hg,.git,__pycache__,.tox,venv,.eggs,.pytest_cache

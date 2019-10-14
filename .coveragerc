@@ -1,0 +1,13 @@
+[run]
+branch = true
+source =
+    pytest_quarantine
+    tests
+
+[paths]
+# Enable `coverage combine` to convert long `.tox/**/site-packages` paths to
+# short `src/` paths. The former is a side-effect of running tests using the
+# installed package. See https://hynek.me/articles/testing-packaging/#cc.
+source =
+    src/
+    */site-packages/

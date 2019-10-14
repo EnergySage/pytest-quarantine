@@ -1,0 +1,6 @@
+[pydocstyle]
+ignore =
+    # Hack to avoid noisy error in setup.py, conftest.py, etc.
+    D100  # Missing docstring in public module
+match = .*.py
+match_dir = (src|tests)
