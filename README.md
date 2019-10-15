@@ -36,7 +36,7 @@ If you encounter any problems, please [file an issue](https://github.com/bhrutle
 
 ## Contributing
 
-Contributions are very welcome. Tests can be run with [tox](https://tox.readthedocs.io/en/latest/). Please ensure the coverage at least stays the same before you submit a pull request.
+Contributions are very welcome. See [How to contribute](./CONTRIBUTING.md) for details.
 
 ## License
 
