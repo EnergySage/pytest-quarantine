@@ -1,59 +1,70 @@
-# How to contribute
+# Contributing
 
-## Getting started
+## Setting up a development environment
 
-[Fork and clone](https://help.github.com/en/articles/fork-a-repo) this repository.
+1. [Fork and clone](https://help.github.com/en/articles/fork-a-repo) this repository.
 
-Create and activate a [virtual environment](https://docs.python.org/3/tutorial/venv.html):
+2. Create and activate a [virtual environment](https://docs.python.org/3/tutorial/venv.html):
 
-```
-$ cd pytest-quarantine
+    ```
+    $ cd pytest-quarantine
 
-$ python3 -m venv venv
+    $ python3 -m venv venv
 
-$ source venv/bin/activate
-```
+    $ source venv/bin/activate
+    ```
 
-Install this package and its dependencies for development:
+3. Install this package and its dependencies for development:
 
-```
-$ pip install -e .[dev]
+    ```
+    $ pip install -e .[dev]
 
-$ pre-commit install --install-hooks
-```
+    $ pre-commit install --install-hooks
+    ```
 
-This will install:
+    This will install:
 
-- [pytest](https://docs.pytest.org/en/latest/), [coverage.py](https://coverage.readthedocs.io/en/latest/), and [tox](https://tox.readthedocs.io/en/latest/) to run the tests
-- [black](https://black.readthedocs.io/en/stable/) to format the code
-- [flake8](http://flake8.pycqa.org/en/latest/) to identify coding errors and check code style
-- [pydocstyle](http://www.pydocstyle.org/en/latest/) to check docstring style
-- [pre-commit](https://pre-commit.com/) to check code quality on every commit
+    - [pytest](https://docs.pytest.org/en/latest/) and [coverage.py](https://coverage.readthedocs.io/en/latest/) to run the tests
+    - [black](https://black.readthedocs.io/en/stable/) to format the code
+    - [flake8](http://flake8.pycqa.org/en/latest/) to identify coding errors and check code style
+    - [pydocstyle](http://www.pydocstyle.org/en/latest/) to check docstring style
+    - [pre-commit](https://pre-commit.com/) to run the formatters and linters on every commit
+    - [tox](https://tox.readthedocs.io/en/latest/) to run common development tasks
 
-## Developing
+## During development
 
-Activate your virtual environment:
+- Activate your virtual environment:
 
-```
-$ source venv/bin/activate
-```
+    ```
+    $ source venv/bin/activate
+    ```
 
-Run the tests:
+- Run the tests:
 
-```
-$ pytest
-```
+    ```
+    $ pytest
+    ```
 
-Run the code quality checks:
+- Run the tests and generate a coverage report:
 
-```
-$ tox -e check
-```
+    ```
+    $ tox -e py,coverage
+    ```
 
-Run the tests in all supported Python versions, and the code quality checks:
+    Please add or update tests to ensure the coverage doesn't drop.
 
-```
-$ tox
-```
+- Run the formatters and linters:
 
-**NOTE**: This requires having multiple versions of Python installed on your system (see the [tox configuration](./tox.ini) for the list). [pyenv](https://github.com/pyenv/pyenv) is a good tool for that.
+    ```
+    $ tox -e check
+    ```
+
+    These checks are also run on every commit via pre-commit hooks. Please fix any errors before committing.
+
+- Run the tests in all supported Python versions, generate a coverage report, and run the checks:
+
+    ```
+    $ tox
+    ```
+
+    This requires having multiple versions of Python installed on your system (see the [tox configuration](./tox.ini) for the list); [pyenv](https://github.com/pyenv/pyenv) is a good tool for that. However, this is also run for every pull request via continuous integration, so it's okay to skip it.
