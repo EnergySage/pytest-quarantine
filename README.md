@@ -30,13 +30,13 @@ $ pip install pytest-quarantine
 
 - TODO
 
-## Issues
+## Getting help
 
-If you encounter any problems, please [file an issue](https://github.com/bhrutledge/pytest-quarantine/issues) along with a detailed description.
+Submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/bhrutledge/pytest-quarantine/issues). Please be as descriptive as you can. For bug reports, please include information about your local environment, the steps to reproduce the bug, and any relevant command-line output.
 
 ## Contributing
 
-Contributions are very welcome. See [How to contribute](./CONTRIBUTING.md) for details.
+Contributions are very welcome. See [How to contribute](./CONTRIBUTING.md) for details. All contributors are expected to follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 ## License
 
