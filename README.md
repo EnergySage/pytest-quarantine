@@ -8,8 +8,6 @@
 
 A plugin for [pytest](https://github.com/pytest-dev/pytest) to manage expected test failures.
 
-This plugin was generated using the [cookiecutter-pytest-plugin](https://github.com/pytest-dev/cookiecutter-pytest-plugin) template.
-
 ## Features
 
 - TODO
@@ -36,8 +34,16 @@ Submit questions, bug reports, and feature requests in the [issue tracker](https
 
 ## Contributing
 
-Contributions are very welcome. See [How to contribute](./CONTRIBUTING.md) for details. All contributors are expected to follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
+Improvements to the code and documentation are greatly appreciated. See [How to contribute](./CONTRIBUTING.md) for details.
+
+## Code of Conduct
+
+Everyone interacting with this project is expected to follow the [Contributor Covenant](./CODE_OF_CONDUCT.md).
 
 ## License
 
 Distributed under the terms of the [MIT](http://opensource.org/licenses/MIT) license.
+
+## Acknowledgements
+
+This plugin was initially generated using the [cookiecutter-pytest-plugin](https://github.com/pytest-dev/cookiecutter-pytest-plugin) template.

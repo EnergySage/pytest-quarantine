@@ -1,12 +1,10 @@
 # How to contribute
 
-Thanks for your interest in improving this project! There are many ways to contribute, and we appreciate all of them.
-
-These guidelines attempt to make the process easier and more enjoyable.
+Thanks for your interest in improving this project! These guidelines attempt to make the process easier and more enjoyable.
 
 ## General guidelines
 
-All contributors are expected to follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
+Everyone interacting with this project is expected to follow the [Code of Conduct](./CODE_OF_CONDUCT.md).
 
 Submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/bhrutledge/pytest-quarantine/issues). Please be as descriptive as you can. For bug reports, please include information about your local environment, the steps to reproduce the bug, and any relevant command-line output.
 
