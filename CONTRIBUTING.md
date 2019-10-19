@@ -8,9 +8,9 @@ Everyone interacting with this project is expected to follow the [Code of Conduc
 
 Submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/bhrutledge/pytest-quarantine/issues). Please be as descriptive as you can. For bug reports, please include information about your local environment, the steps to reproduce the bug, and any relevant command-line output.
 
-Submit improvements to code and documentation via [pull requests](https://github.com/bhrutledge/pytest-quarantine/pulls). Unless it’s a small/quick fix, pull requests should reference an open issue that’s been discussed. This helps ensure that your contribution is aligned with the goals of the project.
+Submit improvements to code and documentation via [pull requests](https://github.com/bhrutledge/pytest-quarantine/pulls). Unless it’s a small/quick fix, pull requests should reference an open issue that’s been discussed. This helps ensure that your contribution is aligned with the goals of this project.
 
-During development, use the provided tools to check for consistent style, coding errors, and test coverage. These checks are run automatically on every pull request, and in general, only pull requests with passing checks will be merged.
+During development, use the provided tools to check for consistent style, coding errors, and test coverage. These checks are run automatically on every pull request. In general, only pull requests with passing checks will be merged.
 
 ## Setting up a development environment
 

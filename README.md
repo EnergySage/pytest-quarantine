@@ -30,7 +30,7 @@ $ pip install pytest-quarantine
 
 ## Getting help
 
-Submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/bhrutledge/pytest-quarantine/issues). Please be as descriptive as you can. For bug reports, please include information about your local environment, the steps to reproduce the bug, and any relevant command-line output.
+Submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/bhrutledge/pytest-quarantine/issues).
 
 ## Contributing
 
