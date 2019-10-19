@@ -1,4 +1,14 @@
-# Contributing
+# How to contribute
+
+Thanks for your interest in improving this project! These guidelines attempt to make the process easier and more enjoyable for you, other contributors, and the maintainers.
+
+## General guidelines
+
+Submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/bhrutledge/pytest-quarantine/issues). Please be as descriptive as you can. For bug reports, include information about your local environment, the steps to reproduce the bug, and any relevant command-line output.
+
+Submit improvements to code and documentation via [pull requests](https://github.com/bhrutledge/pytest-quarantine/pulls). Unless it’s a small/quick fix, pull requests should reference an open issue that’s been discussed. This helps ensure that your contribution is aligned with the goals of the project.
+
+During development, use the provided tools to check for consistent style, coding errors, and test coverage. These checks are run automatically on every pull request, and in general, only pull requests with passing checks will be merged.
 
 ## Setting up a development environment
 
@@ -51,7 +61,7 @@
     $ tox -e py,coverage
     ```
 
-    Please add or update tests to ensure the coverage doesn't drop.
+    Please add or update tests to ensure the coverage doesn’t drop.
 
 - Run the formatters and linters:
 
@@ -67,4 +77,4 @@
     $ tox
     ```
 
-    This requires having multiple versions of Python installed on your system (see the [tox configuration](./tox.ini) for the list); [pyenv](https://github.com/pyenv/pyenv) is a good tool for that. However, this is also run for every pull request via continuous integration, so it's okay to skip it.
+    This requires having multiple versions of Python installed on your system (see the [tox configuration](./tox.ini) for the list); [pyenv](https://github.com/pyenv/pyenv) is a good tool for that. However, this is also run for every pull request via continuous integration, so it’s okay to skip it.
