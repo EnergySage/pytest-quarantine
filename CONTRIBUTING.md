@@ -14,9 +14,9 @@ During development, use the provided tools to check for consistent style, codin
 
 ## Setting up a development environment
 
-1. [Fork and clone](https://help.github.com/en/articles/fork-a-repo) this repository.
+- [Fork and clone](https://help.github.com/en/articles/fork-a-repo) this repository.
 
-2. Create and activate a [virtual environment](https://docs.python.org/3/tutorial/venv.html):
+- Create and activate a [virtual environment](https://docs.python.org/3/tutorial/venv.html):
 
     ```
     $ cd pytest-quarantine
@@ -26,7 +26,7 @@ During development, use the provided tools to check for consistent style, codin
     $ source venv/bin/activate
     ```
 
-3. Install this package and its dependencies for development:
+- Install this package and its dependencies for development:
 
     ```
     $ pip install -e .[dev]
@@ -80,3 +80,44 @@ During development, use the provided tools to check for consistent style, codin
     ```
 
     This requires having multiple versions of Python installed on your system (see the [tox configuration](./tox.ini) for the list); [pyenv](https://github.com/pyenv/pyenv) is a good tool for that. However, this is also run for every pull request via continuous integration, so it’s okay to skip it.
+
+## Making a release
+
+This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [PEP 440](https://www.python.org/dev/peps/pep-0440/), and uses [setuptools_scm](https://pypi.org/project/setuptools-scm/) to manage versions via `git` tags.
+
+- Checkout and pull `master`
+
+- Update the [changelog](./CHANGELOG.md)
+
+- Run the release pipeline and fix any failures:
+
+    ```
+    $ tox -e release
+    ```
+
+- Pick a version number and tag the release:
+
+    ```
+    $ version=VERSION
+    $ git tag -am "Preparing release $version" $version
+    ```
+
+- Run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/):
+
+    ```
+    $ tox -e release
+    ```
+
+- If it looks good on TestPyPI, run the release pipeline to upload to [PyPI](https://pypi.org/project/pytest-quarantine/):
+
+    ```
+    $ tox -e release pypi
+    ```
+
+- Push any changes and the new tag:
+
+    ```
+    $ git push --follow-tags
+    ```
+
+- Review the release on [GitHub](https://github.com/bhrutledge/pytest-quarantine)
