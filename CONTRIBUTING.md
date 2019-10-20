@@ -95,11 +95,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
     $ tox -e release
     ```
 
-- Pick a version number and tag the release:
+- Pick a version number, tag and sign the release, and verify the signature:
 
     ```
     $ version=VERSION
-    $ git tag -am "Preparing release $version" $version
+    $ git tag -s -m "Preparing release $version" $version
+    $ git tag -v $version
     ```
 
 - Run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/):
