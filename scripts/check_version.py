@@ -15,7 +15,7 @@ def main():
     https://www.python.org/dev/peps/pep-0440/#local-version-identifiers
 
     """
-    version = get_version()
+    version = get_version(root="..", relative_to=__file__)
     print("Version: " + version)
 
     if "+" in version:
