@@ -30,13 +30,13 @@ $ pip install pytest-quarantine
 
 ## Getting help
 
-Submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/bhrutledge/pytest-quarantine/issues).
+Please submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/bhrutledge/pytest-quarantine/issues).
 
 ## Contributing
 
 Improvements to the code and documentation are greatly appreciated. See [How to contribute](https://github.com/bhrutledge/pytest-quarantine/blob/master/CONTRIBUTING.md) for details.
 
-## Code of Conduct
+## Code of conduct
 
 Everyone interacting with this project is expected to follow the [Contributor Covenant](https://github.com/bhrutledge/pytest-quarantine/blob/master/CODE_OF_CONDUCT.md).
 
@@ -46,4 +46,4 @@ Distributed under the terms of the [MIT](http://opensource.org/licenses/MIT) lic
 
 ## Acknowledgements
 
-This plugin was initially generated using the [cookiecutter-pytest-plugin](https://github.com/pytest-dev/cookiecutter-pytest-plugin) template.
+This project was initially generated with [Cookiecutter](https://github.com/audreyr/cookiecutter) using the [cookiecutter-pytest-plugin](https://github.com/pytest-dev/cookiecutter-pytest-plugin) template. The layout and tooling has been heavily modified since then, but it was very helpful to start.
