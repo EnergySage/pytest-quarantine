@@ -71,7 +71,7 @@ During development, use the provided tools to check for consistent style, codin
     $ tox -e check
     ```
 
-    These checks are also run on every commit via pre-commit hooks. Please fix any errors before committing.
+    These checks are also run on every commit via pre-commit hooks. Please fix any failures before committing.
 
 - Run the tests in all supported Python versions, generate a coverage report, and run the checks:
 
