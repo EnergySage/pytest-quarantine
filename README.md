@@ -18,7 +18,7 @@ A plugin for [pytest](https://github.com/pytest-dev/pytest) to manage expected t
 
 ## Installation
 
-Via [pip](https://pypi.org/project/pip/) from [PyPI](https://pypi.org/project):
+Via [pip](https://pypi.org/project/pip/) from [PyPI](https://pypi.org/project/pytest-quarantine):
 
 ```
 $ pip install pytest-quarantine
@@ -34,11 +34,11 @@ Submit questions, bug reports, and feature requests in the [issue tracker](https
 
 ## Contributing
 
-Improvements to the code and documentation are greatly appreciated. See [How to contribute](./CONTRIBUTING.md) for details.
+Improvements to the code and documentation are greatly appreciated. See [How to contribute](https://github.com/bhrutledge/pytest-quarantine/blob/master/CONTRIBUTING.md) for details.
 
 ## Code of Conduct
 
-Everyone interacting with this project is expected to follow the [Contributor Covenant](./CODE_OF_CONDUCT.md).
+Everyone interacting with this project is expected to follow the [Contributor Covenant](https://github.com/bhrutledge/pytest-quarantine/blob/master/CODE_OF_CONDUCT.md).
 
 ## License
 
