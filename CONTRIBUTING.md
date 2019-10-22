@@ -10,7 +10,7 @@ Submit questions, bug reports, and feature requests in the [issue tracker](https
 
 Submit improvements to code and documentation via [pull requests](https://github.com/bhrutledge/pytest-quarantine/pulls). Unless it’s a small/quick fix, pull requests should reference an open issue that’s been discussed. This helps ensure that your contribution is aligned with the goals of this project.
 
-During development, use the provided tools to check for consistent style, coding errors, and test coverage. These checks are run automatically on every pull request. In general, only pull requests with passing checks will be merged.
+During development, use the provided tools to check for consistent style, coding errors, and test coverage. These checks and the tests are run automatically on every pull request via [Travis](https://travis-ci.com/bhrutledge/pytest-quarantine), [AppVeyor](https://ci.appveyor.com/project/bhrutledge/pytest-quarantine), and [Codecov](https://codecov.io/gh/bhrutledge/pytest-quarantine). In general, only pull requests with passing tests and checks will be merged.
 
 ## Setting up a development environment
 
@@ -71,7 +71,7 @@ During development, use the provided tools to check for consistent style, codin
     $ tox -e check
     ```
 
-    These checks are also run on every commit via pre-commit hooks. Please fix any failures before committing.
+    These checks are also run on every commit via [pre-commit hooks](./.pre-commit-config.yaml). Please fix any failures before committing.
 
 - Run the tests in all supported Python versions, generate a coverage report, and run the checks:
 
@@ -87,20 +87,40 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Checkout and pull `master`
 
-- Update the [changelog](./CHANGELOG.md)
+- Pick a version number and create a new branch:
 
-- Run the release pipeline and fix any failures:
+    ```
+    $ version=VERSION
+    $ git switch -c release-$version
+    ```
+
+- Run the release pipeline and fix any failures (except the version):
 
     ```
     $ tox -e release
     ```
 
-- Pick a version number, tag and sign the release, and verify the signature:
+- Update the [changelog](./CHANGELOG.md)
+
+- Push the branch, open a PR, and wait for CI to pass
 
     ```
-    $ version=VERSION
+    $ git push -u origin HEAD
+    ```
+
+- Checkout `master` and merge the branch
+
+- Tag the release, and verify the signature:
+
+    ```
     $ git tag -s -m "Preparing release $version" $version
     $ git tag -v $version
+    ```
+
+- Push `master` and the new tag:
+
+    ```
+    $ git push origin && git push origin $version
     ```
 
 - Run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/):
@@ -113,12 +133,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
     ```
     $ tox -e release pypi
-    ```
-
-- Push any changes and the new tag:
-
-    ```
-    $ git push --follow-tags
     ```
 
 - Review the release on [GitHub](https://github.com/bhrutledge/pytest-quarantine)
