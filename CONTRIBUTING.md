@@ -108,33 +108,24 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Update the [changelog](./CHANGELOG.md)
 
-- Push the branch, open a [pull request](https://github.com/bhrutledge/pytest-quarantine/pulls), and wait for CI to pass
+- Push the branch and open a [pull request](https://github.com/bhrutledge/pytest-quarantine/pulls)
 
     ```
     $ git push -u origin HEAD
     ```
 
-- Checkout `master` and merge the branch
+- Wait for CI to pass, then squash & merge the PR
+
+- Create a new [release](https://github.com/bhrutledge/pytest-quarantine/releases) using the version number as the title, and the changelog as the description
+
+- Checkout and update `master`
 
     ```
     $ git checkout master
-    $ git merge --squash $branch
-    $ git commit
+    $ git pull upstream master
     ```
 
-- Tag the release, and verify the signature
-
-    ```
-    $ git tag -s -m "Preparing release $version" $version
-    $ git tag -v $version
-    ```
-
-- Push `master` and the new tag
-
-    ```
-    $ git push upstream
-    $ git push upstream $version
-    ```
+- Run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/)
 
 - Review the release on [GitHub](https://github.com/bhrutledge/pytest-quarantine/releases)
 
