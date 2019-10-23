@@ -14,9 +14,9 @@ During development, use the provided tools to check for consistent style, codin
 
 ## Setting up a development environment
 
-- [Fork and clone](https://help.github.com/en/articles/fork-a-repo) this repository.
+- [Fork and clone](https://help.github.com/en/articles/fork-a-repo) this repository
 
-- Create and activate a [virtual environment](https://docs.python.org/3/tutorial/venv.html):
+- Create and activate a [virtual environment](https://docs.python.org/3/tutorial/venv.html)
 
     ```
     $ cd pytest-quarantine
@@ -26,7 +26,7 @@ During development, use the provided tools to check for consistent style, codin
     $ source venv/bin/activate
     ```
 
-- Install this package and its dependencies for development:
+- Install this package and its dependencies for development
 
     ```
     $ pip install -e .[dev]
@@ -45,19 +45,19 @@ During development, use the provided tools to check for consistent style, codin
 
 ## During development
 
-- Activate your virtual environment:
+- Activate your virtual environment
 
     ```
     $ source venv/bin/activate
     ```
 
-- Run the tests:
+- Run the tests
 
     ```
     $ pytest
     ```
 
-- Run the tests and generate a coverage report:
+- Run the tests and generate a coverage report
 
     ```
     $ tox -e py,coverage
@@ -65,7 +65,7 @@ During development, use the provided tools to check for consistent style, codin
 
     Please add or update tests to ensure the coverage doesn’t drop.
 
-- Run the formatters and linters:
+- Run the formatters and linters
 
     ```
     $ tox -e check
@@ -73,7 +73,7 @@ During development, use the provided tools to check for consistent style, codin
 
     These checks are also run on every commit via [pre-commit hooks](./.pre-commit-config.yaml). Please fix any failures before committing.
 
-- Run the tests in all supported Python versions, generate a coverage report, and run the checks:
+- Run the tests in all supported Python versions, generate a coverage report, and run the checks
 
     ```
     $ tox
@@ -89,17 +89,18 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
     ```
     $ git checkout master
-    $ git pull upstream
+    $ git pull upstream master
     ```
 
-- Pick a version number (e.g. `1.0.1`) and create a new branch:
+- Pick a version number (e.g. `1.0.1`) and create a new branch
 
     ```
-    $ version=1.0.1 branch=release-$version
+    $ version=1.0.1
+    $ branch=release-$version
     $ git checkout -b $branch
     ```
 
-- Run the release pipeline and fix any failures (except the version):
+- Run the release pipeline and fix any failures (except the version)
 
     ```
     $ tox -e release
@@ -107,7 +108,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Update the [changelog](./CHANGELOG.md)
 
-- Push the branch, open a PR, and wait for CI to pass
+- Push the branch, open a [pull request](https://github.com/bhrutledge/pytest-quarantine/pulls), and wait for CI to pass
 
     ```
     $ git push -u origin HEAD
@@ -121,14 +122,14 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
     $ git commit
     ```
 
-- Tag the release, and verify the signature:
+- Tag the release, and verify the signature
 
     ```
     $ git tag -s -m "Preparing release $version" $version
     $ git tag -v $version
     ```
 
-- Push `master` and the new tag:
+- Push `master` and the new tag
 
     ```
     $ git push upstream
@@ -137,13 +138,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Review the release on [GitHub](https://github.com/bhrutledge/pytest-quarantine/releases)
 
-- Run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/):
+- Run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/)
 
     ```
     $ tox -e release
     ```
 
-- If it looks good on TestPyPI, run the release pipeline to upload to [PyPI](https://pypi.org/project/pytest-quarantine/):
+- If it looks good on TestPyPI, run the release pipeline to upload to [PyPI](https://pypi.org/project/pytest-quarantine/)
 
     ```
     $ tox -e release pypi
