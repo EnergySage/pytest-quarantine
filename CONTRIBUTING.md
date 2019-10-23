@@ -85,13 +85,18 @@ During development, use the provided tools to check for consistent style, codin
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [PEP 440](https://www.python.org/dev/peps/pep-0440/), and uses [setuptools_scm](https://pypi.org/project/setuptools-scm/) to manage versions via `git` tags.
 
-- Checkout and pull `master`
-
-- Pick a version number and create a new branch:
+- Checkout and update `master`
 
     ```
-    $ version=VERSION
-    $ git switch -c release-$version
+    $ git checkout master
+    $ git pull upstream
+    ```
+
+- Pick a version number (e.g. `1.0.1`) and create a new branch:
+
+    ```
+    $ version=1.0.1 branch=release-$version
+    $ git checkout -b $branch
     ```
 
 - Run the release pipeline and fix any failures (except the version):
@@ -110,6 +115,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Checkout `master` and merge the branch
 
+    ```
+    $ git checkout master
+    $ git merge --squash $branch
+    $ git commit
+    ```
+
 - Tag the release, and verify the signature:
 
     ```
@@ -120,8 +131,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Push `master` and the new tag:
 
     ```
-    $ git push origin && git push origin $version
+    $ git push upstream
+    $ git push upstream $version
     ```
+
+- Review the release on [GitHub](https://github.com/bhrutledge/pytest-quarantine/releases)
 
 - Run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/):
 
@@ -135,4 +149,4 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
     $ tox -e release pypi
     ```
 
-- Review the release on [GitHub](https://github.com/bhrutledge/pytest-quarantine)
+- 🚀 🎉
