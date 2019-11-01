@@ -6,11 +6,11 @@ Thanks for your interest in improving this project! These guidelines attempt to 
 
 Everyone interacting with this project is expected to follow the [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-Submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/bhrutledge/pytest-quarantine/issues). Please be as descriptive as you can. For bug reports, please include information about your local environment, the steps to reproduce the bug, and any relevant command-line output.
+Submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/energysage/pytest-quarantine/issues). Please be as descriptive as you can. For bug reports, please include information about your local environment, the steps to reproduce the bug, and any relevant command-line output.
 
-Submit improvements to code and documentation via [pull requests](https://github.com/bhrutledge/pytest-quarantine/pulls). Unless it’s a small/quick fix, pull requests should reference an open issue that’s been discussed. This helps ensure that your contribution is aligned with the goals of this project.
+Submit improvements to code and documentation via [pull requests](https://github.com/energysage/pytest-quarantine/pulls). Unless it’s a small/quick fix, pull requests should reference an open issue that’s been discussed. This helps ensure that your contribution is aligned with the goals of this project.
 
-During development, use the provided tools to check for consistent style, coding errors, and test coverage. These checks and the tests are run automatically on every pull request via [Travis](https://travis-ci.com/bhrutledge/pytest-quarantine), [AppVeyor](https://ci.appveyor.com/project/bhrutledge/pytest-quarantine), and [Codecov](https://codecov.io/gh/bhrutledge/pytest-quarantine). In general, only pull requests with passing tests and checks will be merged.
+During development, use the provided tools to check for consistent style, coding errors, and test coverage. These checks and the tests are run automatically on every pull request via [Travis](https://travis-ci.com/energysage/pytest-quarantine), [AppVeyor](https://ci.appveyor.com/project/energysage/pytest-quarantine), and [Codecov](https://codecov.io/gh/energysage/pytest-quarantine). In general, only pull requests with passing tests and checks will be merged.
 
 ## Setting up a development environment
 
@@ -108,7 +108,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Update the [changelog](./CHANGELOG.md)
 
-- Push the branch and open a [pull request](https://github.com/bhrutledge/pytest-quarantine/pulls)
+- Push the branch and open a [pull request](https://github.com/energysage/pytest-quarantine/pulls)
 
     ```
     $ git push -u origin HEAD
@@ -116,7 +116,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Wait for the checks to pass, then squash & merge the pull request
 
-- Create a new [release](https://github.com/bhrutledge/pytest-quarantine/releases) using the version number as the title, and the changelog as the description
+- Create a new [release](https://github.com/energysage/pytest-quarantine/releases) using the version number as the title, and the changelog as the description
 
 - Checkout and update `master`
 
@@ -127,7 +127,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/)
 
-- Review the release on [GitHub](https://github.com/bhrutledge/pytest-quarantine/releases)
+- Review the release on [GitHub](https://github.com/energysage/pytest-quarantine/releases)
 
 - Run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/)
 
