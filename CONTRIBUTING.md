@@ -127,10 +127,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/)
 
-- Review the release on [GitHub](https://github.com/energysage/pytest-quarantine/releases)
-
-- Run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/)
-
     ```
     $ tox -e release
     ```
