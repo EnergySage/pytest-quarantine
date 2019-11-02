@@ -85,34 +85,32 @@ During development, use the provided tools to check for consistent style, codin
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and [PEP 440](https://www.python.org/dev/peps/pep-0440/), and uses [setuptools_scm](https://pypi.org/project/setuptools-scm/) to manage versions via `git` tags.
 
-- Checkout and update `master`
+- If the Travis and AppVeyor builds are passing, checkout and update `master`
 
     ```
     $ git checkout master
+
     $ git pull upstream master
-    ```
-
-- Run the release pipeline and fix any failures (except "Invalid version")
-
-    ```
-    $ tox -e check,release
-    Version: 0.0.3.dev1+g0ccd866
-    ERROR: Invalid version. Make sure the working tree is clean, then tag a new version.
     ```
 
 - Pick a version number (e.g. `0.0.3`)
 
     ```
+    $ python setup.py --version
+    0.0.3.dev1+g0ccd866
+
     $ version=0.0.3
     ```
 
 - Update the [changelog](./CHANGELOG.md)
 
-- Commit all changes, tag the release, and push upstream
+- Commit the changes, tag the release, and push upstream
 
     ```
-    $ git commit -m "Release $version"
+    $ git commit -a -m "Release $version"
+
     $ git tag -s -m "Release $version" $version
+
     $ git push upstream master $version
     ```
 
@@ -133,5 +131,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
     ```
     $ hub release create -m $version -e $(find dist/* -exec echo "-a {}" \;) $version
     ```
+
+    Add the `-p` flag for pre-releases.
 
 - 🚀 🎉
