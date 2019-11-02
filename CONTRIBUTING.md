@@ -141,7 +141,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Using the [GitHub CLI](https://hub.github.com/), create a new GitHub Release, with the version number as the title, the changelog as the description, and the distribution packages as assets
 
     ```
-    $ hub release create --message $version --attach dist/* $version
+    $ hub release create -m $version -e -a dist/*.whl -a dist/*.gz $version
     ```
 
 - 🚀 🎉
