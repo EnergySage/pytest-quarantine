@@ -108,25 +108,15 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 - Update the [changelog](./CHANGELOG.md)
 
-- Commit all changes
+- Commit all changes, tag the release, and push upstream
 
     ```
     $ git commit -m "Release $version"
-    ```
-
-- Tag the release
-
-    ```
     $ git tag -s -m "Release $version" $version
-    ```
-
-- Push the changes and the new tag
-
-    ```
     $ git push upstream master $version
     ```
 
-- If the checks pass, run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/)
+- If the Travis and AppVeyor builds pass, run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/)
 
     ```
     $ tox -e release
@@ -141,7 +131,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Using the [GitHub CLI](https://hub.github.com/), create a new GitHub Release, with the version number as the title, the changelog as the description, and the distribution packages as assets
 
     ```
-    $ hub release create -m $version -e -a dist/*.whl -a dist/*.gz $version
+    $ hub release create -m $version -e $(find dist/* -exec echo "-a {}" \;) $version
     ```
 
 - 🚀 🎉
