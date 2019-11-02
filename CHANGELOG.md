@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.0.3] - 2019-11-02
+
 ### Changed
 
 - Use GitHub CLI for release
@@ -28,7 +30,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Initial project structure, tooling, and contributing guidelines
 
-[Unreleased]: https://github.com/energysage/pytest-quarantine/compare/0.0.2...HEAD
+[Unreleased]: https://github.com/energysage/pytest-quarantine/compare/0.0.3...HEAD
+[0.0.3]: https://github.com/energysage/pytest-quarantine/releases/tag/0.0.3
 [0.0.2]: https://github.com/energysage/pytest-quarantine/releases/tag/0.0.2
 [0.0.1]: https://github.com/energysage/pytest-quarantine/releases/tag/0.0.1
 [0.0.0]: https://github.com/energysage/pytest-quarantine/releases/tag/0.0.0
