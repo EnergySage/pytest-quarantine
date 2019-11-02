@@ -92,40 +92,41 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
     $ git pull upstream master
     ```
 
-- Pick a version number (e.g. `1.0.1`) and create a new branch
+- Run the release pipeline and fix any failures (except "Invalid version")
 
     ```
-    $ version=1.0.1
-    $ branch=release-$version
-    $ git checkout -b $branch
+    $ tox -e check,release
+    Version: 0.0.3.dev1+g0ccd866
+    ERROR: Invalid version. Make sure the working tree is clean, then tag a new version.
     ```
 
-- Run the release pipeline and fix any failures (except the version)
+- Pick a version number (e.g. `0.0.3`)
 
     ```
-    $ tox -e release
+    $ version=0.0.3
     ```
 
 - Update the [changelog](./CHANGELOG.md)
 
-- Push the branch and open a [pull request](https://github.com/energysage/pytest-quarantine/pulls)
+- Commit all changes
 
     ```
-    $ git push -u origin HEAD
+    $ git commit -m "Release $version"
     ```
 
-- Wait for the checks to pass, then squash & merge the pull request
-
-- Create a new [release](https://github.com/energysage/pytest-quarantine/releases) using the version number as the title, and the changelog as the description
-
-- Checkout and update `master`
+- Tag the release
 
     ```
-    $ git checkout master
-    $ git pull upstream master
+    $ git tag -s -m "Release $version" $version
     ```
 
-- Run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/)
+- Push the changes and the new tag
+
+    ```
+    $ git push upstream master $version
+    ```
+
+- If the checks pass, run the release pipeline to upload to [TestPyPI](https://test.pypi.org/project/pytest-quarantine/)
 
     ```
     $ tox -e release
@@ -135,6 +136,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
     ```
     $ tox -e release pypi
+    ```
+
+- Using the [GitHub CLI](https://hub.github.com/), create a new GitHub Release, with the version number as the title, the changelog as the description, and the distribution packages as assets
+
+    ```
+    $ hub release create --message $version --attach dist/* $version
     ```
 
 - 🚀 🎉
