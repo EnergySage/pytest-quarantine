@@ -38,7 +38,7 @@ def failing_tests(testdir):
 
 
 @pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
-def test_save_quarantine(quarantine_path, testdir, failing_tests):
+def test_save_failing_tests(quarantine_path, testdir, failing_tests):
     args = ["--save-quarantine"]
     if quarantine_path:
         args.append(quarantine_path)
@@ -57,6 +57,22 @@ def test_save_quarantine(quarantine_path, testdir, failing_tests):
         """
     )
     assert testdir.tmpdir.join(quarantine_path).read() == quarantine
+
+
+def test_no_save_with_passing_tests(testdir):
+    testdir.makepyfile(
+        """\
+        import pytest
+
+        def test_pass():
+            assert True
+        """
+    )
+
+    result = testdir.runpytest("--save-quarantine")
+
+    result.assert_outcomes(passed=1)
+    assert testdir.tmpdir.join("quarantine.txt").check(exists=False)
 
 
 @pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
