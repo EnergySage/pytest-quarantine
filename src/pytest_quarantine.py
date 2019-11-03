@@ -11,7 +11,13 @@ DEFAULT_QUARANTINE = "quarantine.txt"
 
 
 class QuarantinePlugin(object):
-    """Save a list of failing tests to be marked as xfail on future test runs."""
+    """Save a list of failing tests to be marked as xfail on future test runs.
+
+    TODO: This would be easier to reason about if it were split into two plugin classes:
+    one for saving the quarantine, and one for using the quarantine.
+    For an example, see the implementation of `--last-failed` and `--failed-first`:
+    https://github.com/pytest-dev/pytest/blob/master/src/_pytest/cacheprovider.py
+    """
 
     def __init__(self, config):
         self.quarantine = config.getoption("quarantine")
