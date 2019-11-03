@@ -8,15 +8,17 @@
 
 A plugin for [pytest](https://github.com/pytest-dev/pytest) to manage expected test failures.
 
+**WIP**: This doesn't do anything yet. As of 11/2/2019, the plan is "any day now".
+
 ## Features
 
 Save the list of failing tests, so that they can be automatically marked as expected failures on future test runs.
 
 ### Why?
 
-You've got a test suite; nicely done! Unfortunately, for completely understandable reasons, a lot of the tests are failing. Someday, you and/or your team will get those tests to pass. For now, though, what you really want is to draw a line in the sand and avoid new test failures. Unfortunately, it's hard to tell when those are introduced because the test suite is already failing. You could get the test suite to pass by adding `pytest.mark.xfail` to the existing failures, but there are *so many* of them.
+You've got a test suite; nicely done! Unfortunately, for completely understandable reasons, a lot of the tests are failing. Someday, you and/or your team will get those tests to pass. For now, though, what you really want is to draw a line in the sand and avoid new test failures. Unfortunately, it's hard to tell when they're introduced because the test suite is already failing. You could get the test suite to pass by applying [`pytest.mark.xfail`](http://doc.pytest.org/en/latest/skipping.html#xfail) to the existing failures, but there are *so many* of them.
 
-With this plugin, you can save all of current failures to a file (the quarantine). On future test runs, this plugin will automatically apply `pytest.mark.xfail` to the quarantined tests. Then, the test suite will pass, and any new failures will cause it to fail.
+With this plugin, you can save all of existing failures to a file (the quarantine). On future test runs, this plugin will automatically apply `pytest.mark.xfail` to the quarantined tests. Then, the test suite will pass, and any new failures will cause it to fail.
 
 ## Requirements
 
@@ -51,7 +53,7 @@ $ pytest --quarantine
 = 719 passed, 661 xfailed in 300.51 seconds =
 ```
 
-When the expected failures eventually pass, they can be removed manually from `quarantine.txt`, or automatically using `--save-quarantine`. Note that the latter will overwrite the contents of the quarantine, so it's best to only use it when running the entire test suite.
+When the expected failures eventually pass (i.e., they get counted as `xpassed`), they can be removed manually from `quarantine.txt`, or automatically using `--save-quarantine`. Note that the latter will overwrite the contents of the quarantine, so it's best to only use it when running the entire test suite.
 
 The default `quarantine.txt` can be changed by an optional argument (for example, if test failures differ between environments, or for multiple test suites):
 
@@ -80,3 +82,7 @@ Distributed under the terms of the [MIT](http://opensource.org/licenses/MIT) lic
 ## Acknowledgements
 
 This project was initially generated with [Cookiecutter](https://github.com/audreyr/cookiecutter) using the [cookiecutter-pytest-plugin](https://github.com/pytest-dev/cookiecutter-pytest-plugin) template. The layout and tooling has been heavily modified since then, but it was very helpful to start.
+
+The name was inspired by the [quarantine feature](https://confluence.atlassian.com/bamboo/quarantining-failing-tests-289276886.html) of the Bamboo CI/CD service.
+
+[Pros and Cons of Quarantined Tests](https://marklapierre.net/pros-cons-quarantined-tests/) is a good introduction to the concept (not related to this project).
