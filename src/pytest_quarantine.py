@@ -1,3 +1,7 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import unicode_literals
+
 import pytest
 
 
@@ -5,6 +9,7 @@ class QuarantinePlugin(object):
     """Save a list of failing tests to be marked as xfail on future test runs."""
 
     # TODO: Guarantee this is opened from pytest's root dir
+    # (to allow running pytest in a subdirectory)
     DEFAULT_QUARANTINE = "quarantine.txt"
 
     def __init__(self, config):
@@ -25,9 +30,13 @@ class QuarantinePlugin(object):
         if not self.quarantine:
             return
 
-        with open(self.quarantine) as f:
-            for nodeid in f:
-                self.nodeids.add(nodeid.strip())
+        try:
+            with open(self.quarantine) as f:
+                for nodeid in f:
+                    self.nodeids.add(nodeid.strip())
+        except IOError:
+            # TODO: Would it be better to warn or abort?
+            pass
 
     def pytest_runtest_setup(self, item):
         """Mark a test as `xfail` if its ID is in the quarantine."""
