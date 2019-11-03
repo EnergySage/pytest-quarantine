@@ -12,27 +12,6 @@ class QuarantinePlugin(object):
         self.save_quarantine = config.getoption("save_quarantine")
         self.nodeids = set()
 
-    @classmethod
-    def addoptions(cls, parser):
-        """Add command line options for the quarantine."""
-        group = parser.getgroup("quarantine")
-
-        group.addoption(
-            "--save-quarantine",
-            nargs="?",
-            const=cls.DEFAULT_QUARANTINE,
-            metavar="PATH",
-            help="Write failing tests to %(metavar)s (default: %(const)s)",
-        )
-
-        group.addoption(
-            "--quarantine",
-            nargs="?",
-            const=cls.DEFAULT_QUARANTINE,
-            metavar="PATH",
-            help="Mark tests listed in %(metavar)s with `xfail` (default: %(const)s)",
-        )
-
     def pytest_report_header(self, config):
         """Display configuration at runtime."""
         options = [
@@ -70,8 +49,24 @@ class QuarantinePlugin(object):
 
 
 def pytest_addoption(parser):
-    """Add command line options."""
-    QuarantinePlugin.addoptions(parser)
+    """Add command line options to the 'quarantine' group."""
+    group = parser.getgroup("quarantine")
+
+    group.addoption(
+        "--save-quarantine",
+        nargs="?",
+        const=QuarantinePlugin.DEFAULT_QUARANTINE,
+        metavar="PATH",
+        help="Write failing tests to %(metavar)s (default: %(const)s)",
+    )
+
+    group.addoption(
+        "--quarantine",
+        nargs="?",
+        const=QuarantinePlugin.DEFAULT_QUARANTINE,
+        metavar="PATH",
+        help="Mark tests listed in %(metavar)s with `xfail` (default: %(const)s)",
+    )
 
 
 # TODO: ValueError: Plugin already registered: quarantine
