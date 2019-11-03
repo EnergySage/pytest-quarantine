@@ -1,3 +1,5 @@
+import textwrap
+
 import pytest
 
 
@@ -11,8 +13,8 @@ def test_options(testdir):
 
 @pytest.fixture
 def failing_tests(testdir):
-    testdir.makepyfile(
-        """
+    return testdir.makepyfile(
+        test_failing_tests="""\
         import pytest
 
         @pytest.fixture
@@ -37,15 +39,25 @@ def test_save_quarantine(testdir, failing_tests):
     result.stdout.fnmatch_lines(["save_quarantine: quarantine.txt"])
     result.assert_outcomes(passed=1, failed=1, error=1)
 
-    assert testdir.tmpdir.join("quarantine.txt").read() == (
-        "test_save_quarantine.py::test_error\ntest_save_quarantine.py::test_failure\n"
+    quarantine = textwrap.dedent(
+        """\
+        test_failing_tests.py::test_error
+        test_failing_tests.py::test_failure
+        """
     )
+
+    assert testdir.tmpdir.join("quarantine.txt").read() == quarantine
 
 
 def test_use_quarantine(testdir, failing_tests):
-    testdir.tmpdir.join("quarantine.txt").write(
-        "test_use_quarantine.py::test_error\ntest_use_quarantine.py::test_failure\n"
+    quarantine = textwrap.dedent(
+        """\
+        test_failing_tests.py::test_error
+        test_failing_tests.py::test_failure
+        """
     )
+
+    testdir.tmpdir.join("quarantine.txt").write(quarantine)
 
     result = testdir.runpytest("--quarantine")
 
