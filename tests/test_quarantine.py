@@ -5,6 +5,11 @@ from __future__ import unicode_literals
 import textwrap
 
 import pytest
+from pytest_quarantine import DEFAULT_QUARANTINE
+
+
+def test_default_file():
+    assert DEFAULT_QUARANTINE == "quarantine.txt"
 
 
 def test_options(testdir):
@@ -38,12 +43,12 @@ def failing_tests(testdir):
 
 
 @pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
-def test_save_quarantine(quarantine_path, testdir, failing_tests):
+def test_save_failing_tests(quarantine_path, testdir, failing_tests):
     args = ["--save-quarantine"]
     if quarantine_path:
         args.append(quarantine_path)
     else:
-        quarantine_path = "quarantine.txt"
+        quarantine_path = DEFAULT_QUARANTINE
 
     result = testdir.runpytest(*args)
 
@@ -59,13 +64,29 @@ def test_save_quarantine(quarantine_path, testdir, failing_tests):
     assert testdir.tmpdir.join(quarantine_path).read() == quarantine
 
 
+def test_no_save_with_passing_tests(testdir):
+    testdir.makepyfile(
+        """\
+        import pytest
+
+        def test_pass():
+            assert True
+        """
+    )
+
+    result = testdir.runpytest("--save-quarantine")
+
+    result.assert_outcomes(passed=1)
+    assert testdir.tmpdir.join(DEFAULT_QUARANTINE).check(exists=False)
+
+
 @pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
 def test_full_quarantine(quarantine_path, testdir, failing_tests):
     args = ["--quarantine"]
     if quarantine_path:
         args.append(quarantine_path)
     else:
-        quarantine_path = "quarantine.txt"
+        quarantine_path = DEFAULT_QUARANTINE
 
     quarantine = textwrap.dedent(
         """\
@@ -87,7 +108,7 @@ def test_partial_quarantine(testdir, failing_tests):
         test_failing_tests.py::test_failure
         """
     )
-    testdir.tmpdir.join("quarantine.txt").write(quarantine)
+    testdir.tmpdir.join(DEFAULT_QUARANTINE).write(quarantine)
 
     result = testdir.runpytest("--quarantine")
 

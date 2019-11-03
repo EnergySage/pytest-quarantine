@@ -5,12 +5,19 @@ from __future__ import unicode_literals
 import pytest
 
 
-class QuarantinePlugin(object):
-    """Save a list of failing tests to be marked as xfail on future test runs."""
+# TODO: Guarantee this is opened from pytest's root dir
+# (to allow running pytest in a subdirectory)
+DEFAULT_QUARANTINE = "quarantine.txt"
 
-    # TODO: Guarantee this is opened from pytest's root dir
-    # (to allow running pytest in a subdirectory)
-    DEFAULT_QUARANTINE = "quarantine.txt"
+
+class QuarantinePlugin(object):
+    """Save a list of failing tests to be marked as xfail on future test runs.
+
+    TODO: This would be easier to reason about if it were split into two plugin classes:
+    one for saving the quarantine, and one for using the quarantine.
+    For an example, see the implementation of `--last-failed` and `--failed-first`:
+    https://github.com/pytest-dev/pytest/blob/master/src/_pytest/cacheprovider.py
+    """
 
     def __init__(self, config):
         self.quarantine = config.getoption("quarantine")
@@ -69,7 +76,7 @@ def pytest_addoption(parser):
     group.addoption(
         "--save-quarantine",
         nargs="?",
-        const=QuarantinePlugin.DEFAULT_QUARANTINE,
+        const=DEFAULT_QUARANTINE,
         metavar="PATH",
         help="Write failing tests to %(metavar)s (default: %(const)s)",
     )
@@ -77,7 +84,7 @@ def pytest_addoption(parser):
     group.addoption(
         "--quarantine",
         nargs="?",
-        const=QuarantinePlugin.DEFAULT_QUARANTINE,
+        const=DEFAULT_QUARANTINE,
         metavar="PATH",
         help="Mark tests listed in %(metavar)s with `xfail` (default: %(const)s)",
     )
