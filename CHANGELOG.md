@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
+- Update README (#15)
 - Add plugin functionality and tests (#16)
 
 ## [0.0.3] - 2019-11-02
