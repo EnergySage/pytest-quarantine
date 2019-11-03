@@ -1,58 +1,100 @@
-def test_bar_fixture(testdir):
-    """Make sure that pytest accepts our fixture."""
-    # create a temporary pytest test module
-    testdir.makepyfile(
-        """
-        def test_sth(bar):
-            assert bar == "europython2015"
-        """
-    )
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import unicode_literals
 
-    # run pytest with the following cmd args
-    result = testdir.runpytest("--foo=europython2015", "-v")
+import textwrap
 
-    # fnmatch_lines does an assertion internally
-    result.stdout.fnmatch_lines(["*::test_sth PASSED*"])
-
-    # make sure that that we get a '0' exit code for the testsuite
-    assert result.ret == 0
+import pytest
 
 
-def test_help_message(testdir):
-    """Make sure there's help text for `--foo`."""
+def test_options(testdir):
     result = testdir.runpytest("--help")
-    # fnmatch_lines does an assertion internally
+
     result.stdout.fnmatch_lines(
-        ["quarantine:", '*--foo=DEST_FOO*Set the value for the fixture "bar".']
+        ["quarantine:", "*--save-quarantine=*", "*--quarantine=*"]
     )
 
 
-def test_hello_ini_setting(testdir):
-    """Demonstrate testing configuration files."""
-    testdir.makeini(
-        """
-        [pytest]
-        HELLO = world
-        """
-    )
-
-    testdir.makepyfile(
-        """
+@pytest.fixture
+def failing_tests(testdir):
+    return testdir.makepyfile(
+        test_failing_tests="""\
         import pytest
 
         @pytest.fixture
-        def hello(request):
-            return request.config.getini('HELLO')
+        def error():
+            assert False
 
-        def test_hello_world(hello):
-            assert hello == 'world'
+        def test_error(error):
+            assert True
+
+        def test_failure():
+            assert False
+
+        def test_pass():
+            assert True
         """
     )
 
-    result = testdir.runpytest("-v")
 
-    # fnmatch_lines does an assertion internally
-    result.stdout.fnmatch_lines(["*::test_hello_world PASSED*"])
+@pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
+def test_save_quarantine(quarantine_path, testdir, failing_tests):
+    args = ["--save-quarantine"]
+    if quarantine_path:
+        args.append(quarantine_path)
+    else:
+        quarantine_path = "quarantine.txt"
 
-    # make sure that that we get a '0' exit code for the testsuite
-    assert result.ret == 0
+    result = testdir.runpytest(*args)
+
+    result.stdout.fnmatch_lines(["save_quarantine: {}".format(quarantine_path)])
+    result.assert_outcomes(passed=1, failed=1, error=1)
+
+    quarantine = textwrap.dedent(
+        """\
+        test_failing_tests.py::test_error
+        test_failing_tests.py::test_failure
+        """
+    )
+    assert testdir.tmpdir.join(quarantine_path).read() == quarantine
+
+
+@pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
+def test_full_quarantine(quarantine_path, testdir, failing_tests):
+    args = ["--quarantine"]
+    if quarantine_path:
+        args.append(quarantine_path)
+    else:
+        quarantine_path = "quarantine.txt"
+
+    quarantine = textwrap.dedent(
+        """\
+        test_failing_tests.py::test_error
+        test_failing_tests.py::test_failure
+        """
+    )
+    testdir.tmpdir.join(quarantine_path).write(quarantine)
+
+    result = testdir.runpytest(*args)
+
+    result.stdout.fnmatch_lines(["quarantine: {}".format(quarantine_path)])
+    result.assert_outcomes(passed=1, xfailed=2)
+
+
+def test_partial_quarantine(testdir, failing_tests):
+    quarantine = textwrap.dedent(
+        """\
+        test_failing_tests.py::test_failure
+        """
+    )
+    testdir.tmpdir.join("quarantine.txt").write(quarantine)
+
+    result = testdir.runpytest("--quarantine")
+
+    result.assert_outcomes(passed=1, error=1, xfailed=1)
+
+
+def test_missing_quarantine(testdir, failing_tests):
+    result = testdir.runpytest("--quarantine")
+
+    result.assert_outcomes(passed=1, failed=1, error=1)
