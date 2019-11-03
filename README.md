@@ -8,8 +8,6 @@
 
 A plugin for [pytest](https://github.com/pytest-dev/pytest) to manage expected test failures.
 
-**WIP**: This doesn't do anything yet. As of 11/2/2019, the plan is "any day now".
-
 ## Features
 
 Save the list of failing tests, so that they can be automatically marked as expected failures on future test runs.
