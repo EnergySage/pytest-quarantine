@@ -5,12 +5,13 @@ from __future__ import unicode_literals
 import pytest
 
 
+# TODO: Guarantee this is opened from pytest's root dir
+# (to allow running pytest in a subdirectory)
+DEFAULT_QUARANTINE = "quarantine.txt"
+
+
 class QuarantinePlugin(object):
     """Save a list of failing tests to be marked as xfail on future test runs."""
-
-    # TODO: Guarantee this is opened from pytest's root dir
-    # (to allow running pytest in a subdirectory)
-    DEFAULT_QUARANTINE = "quarantine.txt"
 
     def __init__(self, config):
         self.quarantine = config.getoption("quarantine")
@@ -69,7 +70,7 @@ def pytest_addoption(parser):
     group.addoption(
         "--save-quarantine",
         nargs="?",
-        const=QuarantinePlugin.DEFAULT_QUARANTINE,
+        const=DEFAULT_QUARANTINE,
         metavar="PATH",
         help="Write failing tests to %(metavar)s (default: %(const)s)",
     )
@@ -77,7 +78,7 @@ def pytest_addoption(parser):
     group.addoption(
         "--quarantine",
         nargs="?",
-        const=QuarantinePlugin.DEFAULT_QUARANTINE,
+        const=DEFAULT_QUARANTINE,
         metavar="PATH",
         help="Mark tests listed in %(metavar)s with `xfail` (default: %(const)s)",
     )
