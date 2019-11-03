@@ -48,6 +48,11 @@ class QuarantinePlugin(object):
             f.writelines(nodeid + "\n" for nodeid in sorted(self.nodeids))
 
 
+def pytest_configure(config):
+    """Register the plugin functionality."""
+    config.pluginmanager.register(QuarantinePlugin(config), "quarantine_plugin")
+
+
 def pytest_addoption(parser):
     """Add command line options to the 'quarantine' group."""
     group = parser.getgroup("quarantine")
@@ -67,9 +72,3 @@ def pytest_addoption(parser):
         metavar="PATH",
         help="Mark tests listed in %(metavar)s with `xfail` (default: %(const)s)",
     )
-
-
-# TODO: ValueError: Plugin already registered: quarantine
-# def pytest_configure(config):
-#     """Register the plugin."""
-#     config.pluginmanager.register(QuarantinePlugin(config), "quarantine")
