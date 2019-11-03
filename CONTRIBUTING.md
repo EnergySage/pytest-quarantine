@@ -6,11 +6,11 @@ Thanks for your interest in improving this project! These guidelines attempt to 
 
 Everyone interacting with this project is expected to follow the [Code of Conduct](./CODE_OF_CONDUCT.md).
 
-Submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/energysage/pytest-quarantine/issues). Please be as descriptive as you can. For bug reports, please include information about your local environment, the steps to reproduce the bug, and any relevant command-line output.
+Submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/EnergySage/pytest-quarantine/issues). Please be as descriptive as you can. For bug reports, please include information about your local environment, the steps to reproduce the bug, and any relevant command-line output.
 
-Submit improvements to code and documentation via [pull requests](https://github.com/energysage/pytest-quarantine/pulls). Unless it’s a small/quick fix, pull requests should reference an open issue that’s been discussed. This helps ensure that your contribution is aligned with the goals of this project.
+Submit improvements to code and documentation via [pull requests](https://github.com/EnergySage/pytest-quarantine/pulls). Unless it’s a small/quick fix, pull requests should reference an open issue that’s been discussed. This helps ensure that your contribution is aligned with the goals of this project.
 
-During development, use the provided tools to check for consistent style, coding errors, and test coverage. These checks and the tests are run automatically on every pull request via [Travis](https://travis-ci.com/energysage/pytest-quarantine), [AppVeyor](https://ci.appveyor.com/project/energysage/pytest-quarantine), and [Codecov](https://codecov.io/gh/energysage/pytest-quarantine). In general, only pull requests with passing tests and checks will be merged.
+During development, use the provided tools to check for consistent style, coding errors, and test coverage. These checks and the tests are run automatically on every pull request via [Travis](https://travis-ci.com/EnergySage/pytest-quarantine), [AppVeyor](https://ci.appveyor.com/project/EnergySage/pytest-quarantine), and [Codecov](https://codecov.io/gh/EnergySage/pytest-quarantine). In general, only pull requests with passing tests and checks will be merged.
 
 ## Setting up a development environment
 

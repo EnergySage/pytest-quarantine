@@ -63,15 +63,15 @@ $ pytest --quarantine=quarantine-py3.txt
 
 ## Getting help
 
-Please submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/energysage/pytest-quarantine/issues).
+Please submit questions, bug reports, and feature requests in the [issue tracker](https://github.com/EnergySage/pytest-quarantine/issues).
 
 ## Contributing
 
-Improvements to the code and documentation are greatly appreciated. See [How to contribute](https://github.com/energysage/pytest-quarantine/blob/master/CONTRIBUTING.md) for details.
+Improvements to the code and documentation are greatly appreciated. See [How to contribute](https://github.com/EnergySage/pytest-quarantine/blob/master/CONTRIBUTING.md) for details.
 
 ## Code of conduct
 
-Everyone interacting with this project is expected to follow the [Contributor Covenant](https://github.com/energysage/pytest-quarantine/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting with this project is expected to follow the [Contributor Covenant](https://github.com/EnergySage/pytest-quarantine/blob/master/CODE_OF_CONDUCT.md).
 
 ## License
 
