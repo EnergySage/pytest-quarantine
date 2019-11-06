@@ -115,6 +115,21 @@ def test_partial_quarantine(testdir, failing_tests):
     result.assert_outcomes(passed=1, error=1, xfailed=1)
 
 
+def test_passing_quarantine(testdir, failing_tests):
+    quarantine = textwrap.dedent(
+        """\
+        test_failing_tests.py::test_pass
+        test_failing_tests.py::test_error
+        test_failing_tests.py::test_failure
+        """
+    )
+    testdir.tmpdir.join(DEFAULT_QUARANTINE).write(quarantine)
+
+    result = testdir.runpytest("--quarantine")
+
+    result.assert_outcomes(xfailed=2, xpassed=1)
+
+
 def test_missing_quarantine(testdir, failing_tests):
     result = testdir.runpytest("--quarantine")
 
