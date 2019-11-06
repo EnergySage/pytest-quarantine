@@ -42,6 +42,11 @@ def failing_tests(testdir):
     )
 
 
+def test_no_report_header_without_options(testdir):
+    result = testdir.runpytest()
+    assert "quarantine: " not in result.stdout.str()
+
+
 @pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
 def test_save_failing_tests(quarantine_path, testdir, failing_tests):
     args = ["--save-quarantine"]
