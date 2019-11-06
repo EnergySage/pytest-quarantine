@@ -44,7 +44,7 @@ def failing_tests(testdir):
 
 def test_no_report_header_without_options(testdir):
     result = testdir.runpytest()
-    assert "quarantine: " not in result.stdout.str()
+    assert "quarantine: " not in result.outlines
 
 
 @pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
@@ -59,6 +59,7 @@ def test_save_failing_tests(quarantine_path, testdir, failing_tests):
 
     result.stdout.fnmatch_lines(["save_quarantine: {}".format(quarantine_path)])
     result.assert_outcomes(passed=1, failed=1, error=1)
+    assert result.ret == pytest.ExitCode.TESTS_FAILED
 
     quarantine = textwrap.dedent(
         """\
@@ -82,6 +83,7 @@ def test_no_save_with_passing_tests(testdir):
     result = testdir.runpytest("--save-quarantine")
 
     result.assert_outcomes(passed=1)
+    assert result.ret == pytest.ExitCode.OK
     assert testdir.tmpdir.join(DEFAULT_QUARANTINE).check(exists=False)
 
 
@@ -98,6 +100,7 @@ def test_missing_quarantine(quarantine_path, testdir):
     result.stderr.fnmatch_lines(
         ["ERROR: Could not load quarantine:*'{}'".format(quarantine_path)]
     )
+    assert result.ret == pytest.ExitCode.USAGE_ERROR
 
 
 @pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
@@ -120,6 +123,7 @@ def test_full_quarantine(quarantine_path, testdir, failing_tests):
 
     result.stdout.fnmatch_lines(["quarantine: {}".format(quarantine_path)])
     result.assert_outcomes(passed=1, xfailed=2)
+    assert result.ret == pytest.ExitCode.OK
 
 
 def test_partial_quarantine(testdir, failing_tests):
@@ -133,6 +137,7 @@ def test_partial_quarantine(testdir, failing_tests):
     result = testdir.runpytest("--quarantine")
 
     result.assert_outcomes(passed=1, error=1, xfailed=1)
+    assert result.ret == pytest.ExitCode.TESTS_FAILED
 
 
 def test_passing_quarantine(testdir, failing_tests):
@@ -148,3 +153,4 @@ def test_passing_quarantine(testdir, failing_tests):
     result = testdir.runpytest("--quarantine")
 
     result.assert_outcomes(xfailed=2, xpassed=1)
+    assert result.ret == pytest.ExitCode.OK
