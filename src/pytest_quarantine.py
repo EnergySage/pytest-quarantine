@@ -11,7 +11,7 @@ DEFAULT_QUARANTINE = "quarantine.txt"
 
 
 class SaveQuarantinePlugin(object):
-    """Save a list of failing tests to be marked as xfail on future test runs."""
+    """Save the list of failing tests to a quarantine file."""
 
     def __init__(self, config):
         self.save_quarantine = config.getoption("save_quarantine")
@@ -38,7 +38,7 @@ class SaveQuarantinePlugin(object):
 
 
 class QuarantinePlugin(object):
-    """Mark a list of tests in a file as xfail."""
+    """Mark each test listed in a quarantine file as xfail."""
 
     def __init__(self, config):
         self.quarantine = config.getoption("quarantine")
@@ -51,7 +51,7 @@ class QuarantinePlugin(object):
         return "{}: {}".format("quarantine", self.quarantine)
 
     def pytest_runtestloop(self, session):
-        """Read the ID's of quarantined tests from a file."""
+        """Read test ID's from a file into the quarantine."""
         if not self.quarantine:
             return
 
@@ -63,7 +63,7 @@ class QuarantinePlugin(object):
             pass
 
     def pytest_runtest_setup(self, item):
-        """Mark a test as `xfail` if its ID is in the quarantine."""
+        """Mark a test as xfail if its ID is in the quarantine."""
         if self.quarantine and item.nodeid in self.nodeids:
             item.add_marker(pytest.mark.xfail(reason="Quarantined"))
 
