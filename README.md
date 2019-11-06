@@ -79,8 +79,8 @@ Distributed under the terms of the [MIT](http://opensource.org/licenses/MIT) lic
 
 ## Acknowledgements
 
-This project was initially generated with [Cookiecutter](https://github.com/audreyr/cookiecutter) using the [cookiecutter-pytest-plugin](https://github.com/pytest-dev/cookiecutter-pytest-plugin) template. The layout and tooling has been heavily modified since then, but it was very helpful to start.
+This project was initially developed at [EnergySage](https://www.energysage.com/about/who-we-are) to aid our migration to Python 3. We hope other people find it helpful.
 
-The name was inspired by the [quarantine feature](https://confluence.atlassian.com/bamboo/quarantining-failing-tests-289276886.html) of the Bamboo CI/CD service.
+The name was inspired by the [quarantine feature](https://confluence.atlassian.com/bamboo/quarantining-failing-tests-289276886.html) of the Bamboo CI/CD service. [Pros and Cons of Quarantined Tests](https://marklapierre.net/pros-cons-quarantined-tests/) is a good introduction to the concept (not related to this project).
 
-[Pros and Cons of Quarantined Tests](https://marklapierre.net/pros-cons-quarantined-tests/) is a good introduction to the concept (not related to this project).
+The repository was generated with [Cookiecutter](https://github.com/audreyr/cookiecutter) using the [cookiecutter-pytest-plugin](https://github.com/pytest-dev/cookiecutter-pytest-plugin) template. The layout and tooling has been heavily modified since then, but it was very helpful to start.
