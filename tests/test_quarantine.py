@@ -86,6 +86,21 @@ def test_no_save_with_passing_tests(testdir):
 
 
 @pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
+def test_missing_quarantine(quarantine_path, testdir):
+    args = ["--quarantine"]
+    if quarantine_path:
+        args.append(quarantine_path)
+    else:
+        quarantine_path = DEFAULT_QUARANTINE
+
+    result = testdir.runpytest(*args)
+
+    result.stderr.fnmatch_lines(
+        ["ERROR: Could not load quarantine:*'{}'".format(quarantine_path)]
+    )
+
+
+@pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
 def test_full_quarantine(quarantine_path, testdir, failing_tests):
     args = ["--quarantine"]
     if quarantine_path:
@@ -133,9 +148,3 @@ def test_passing_quarantine(testdir, failing_tests):
     result = testdir.runpytest("--quarantine")
 
     result.assert_outcomes(xfailed=2, xpassed=1)
-
-
-def test_missing_quarantine(testdir, failing_tests):
-    result = testdir.runpytest("--quarantine")
-
-    result.assert_outcomes(passed=1, failed=1, error=1)
