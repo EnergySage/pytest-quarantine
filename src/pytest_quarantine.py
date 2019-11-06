@@ -57,8 +57,7 @@ class QuarantinePlugin(object):
 
         try:
             with open(self.quarantine) as f:
-                for nodeid in f:
-                    self.nodeids.add(nodeid.strip())
+                self.nodeids = {nodeid.strip() for nodeid in f}
         except IOError:
             # TODO: Would it be better to warn or abort?
             pass
