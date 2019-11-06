@@ -10,27 +10,45 @@ import pytest
 DEFAULT_QUARANTINE = "quarantine.txt"
 
 
-class QuarantinePlugin(object):
-    """Save a list of failing tests to be marked as xfail on future test runs.
-
-    TODO: This would be easier to reason about if it were split into two plugin classes:
-    one for saving the quarantine, and one for using the quarantine.
-    For an example, see the implementation of `--last-failed` and `--failed-first`:
-    https://github.com/pytest-dev/pytest/blob/master/src/_pytest/cacheprovider.py
-    """
+class SaveQuarantinePlugin(object):
+    """Save a list of failing tests to be marked as xfail on future test runs."""
 
     def __init__(self, config):
-        self.quarantine = config.getoption("quarantine")
         self.save_quarantine = config.getoption("save_quarantine")
         self.nodeids = set()
 
     def pytest_report_header(self, config):
         """Display configuration at runtime."""
-        options = [
-            (option, getattr(self, option))
-            for option in ["quarantine", "save_quarantine"]
-        ]
-        return ["{}: {}".format(option, value) for option, value in options if value]
+        if not self.save_quarantine:
+            return None
+        return "{}: {}".format("save_quarantine", self.save_quarantine)
+
+    def pytest_runtest_logreport(self, report):
+        """Save the ID of a failed test to the quarantine."""
+        if not report.passed:
+            self.nodeids.add(report.nodeid)
+
+    def pytest_sessionfinish(self, session):
+        """Write the ID's of quarantined tests to a file."""
+        if not (self.save_quarantine and self.nodeids):
+            return
+
+        with open(self.save_quarantine, "w") as f:
+            f.writelines(nodeid + "\n" for nodeid in sorted(self.nodeids))
+
+
+class QuarantinePlugin(object):
+    """Mark a list of tests in a file as xfail."""
+
+    def __init__(self, config):
+        self.quarantine = config.getoption("quarantine")
+        self.nodeids = set()
+
+    def pytest_report_header(self, config):
+        """Display configuration at runtime."""
+        if not self.quarantine:
+            return None
+        return "{}: {}".format("quarantine", self.quarantine)
 
     def pytest_runtestloop(self, session):
         """Read the ID's of quarantined tests from a file."""
@@ -50,22 +68,14 @@ class QuarantinePlugin(object):
         if self.quarantine and item.nodeid in self.nodeids:
             item.add_marker(pytest.mark.xfail(reason="Quarantined"))
 
-    def pytest_runtest_logreport(self, report):
-        """Save the ID of a failed test to the quarantine."""
-        if not report.passed:
-            self.nodeids.add(report.nodeid)
-
-    def pytest_sessionfinish(self, session):
-        """Write the ID's of quarantined tests to a file."""
-        if not (self.save_quarantine and self.nodeids):
-            return
-
-        with open(self.save_quarantine, "w") as f:
-            f.writelines(nodeid + "\n" for nodeid in sorted(self.nodeids))
-
 
 def pytest_configure(config):
     """Register the plugin functionality."""
+    # TODO: Only register when the options are present?
+    # It could remove the guard conditionals in the classes.
+    config.pluginmanager.register(
+        SaveQuarantinePlugin(config), "save_quarantine_plugin"
+    )
     config.pluginmanager.register(QuarantinePlugin(config), "quarantine_plugin")
 
 
