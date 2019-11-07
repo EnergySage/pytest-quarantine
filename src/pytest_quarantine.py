@@ -42,18 +42,17 @@ class QuarantinePlugin(object):
         self.quarantine_path = quarantine_path
         self.nodeids = set()
 
-    def pytest_report_header(self, config):
-        """Display configuration at runtime."""
-        return "{}: {}".format("quarantine", self.quarantine_path)
-
-    def pytest_runtestloop(self, session):
+    def pytest_sessionstart(self, session):
         """Read test ID's from a file into the quarantine."""
         try:
             with open(self.quarantine_path) as f:
                 self.nodeids = {nodeid.strip() for nodeid in f}
-        except IOError:
-            # TODO: Would it be better to warn or abort?
-            pass
+        except IOError as exc:
+            raise pytest.UsageError("Could not load quarantine: " + str(exc))
+
+    def pytest_report_header(self, config):
+        """Display configuration at runtime."""
+        return "{}: {}".format("quarantine", self.quarantine_path)
 
     def pytest_runtest_setup(self, item):
         """Mark a test as xfail if its ID is in the quarantine."""
