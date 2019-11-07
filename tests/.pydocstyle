@@ -1,0 +1,5 @@
+[pydocstyle]
+add-ignore =
+    # Don't require docstrings in tests (but check them if they exist)
+    D1,  # Missing Docstrings
+match = .*.py
