@@ -5,6 +5,16 @@ from __future__ import unicode_literals
 import textwrap
 
 import pytest
+
+try:
+    EXIT_OK = pytest.ExitCode.OK
+    EXIT_TESTSFAILED = pytest.ExitCode.TESTS_FAILED
+    EXIT_USAGEERROR = pytest.ExitCode.USAGE_ERROR
+except AttributeError:
+    # ExitCode was introduced in pytest 5.0.0. As long as we support pytest 4.6 (for
+    # Python 2), use the private constants for readability.
+    from _pytest.main import EXIT_OK, EXIT_TESTSFAILED, EXIT_USAGEERROR  # noqa: F401
+
 from pytest_quarantine import DEFAULT_QUARANTINE
 
 
@@ -59,7 +69,7 @@ def test_save_failing_tests(quarantine_path, testdir, failing_tests):
 
     result.stdout.fnmatch_lines(["save_quarantine: {}".format(quarantine_path)])
     result.assert_outcomes(passed=1, failed=1, error=1)
-    assert result.ret == pytest.ExitCode.TESTS_FAILED
+    assert result.ret == EXIT_TESTSFAILED
 
     quarantine = textwrap.dedent(
         """\
@@ -83,7 +93,7 @@ def test_no_save_with_passing_tests(testdir):
     result = testdir.runpytest("--save-quarantine")
 
     result.assert_outcomes(passed=1)
-    assert result.ret == pytest.ExitCode.OK
+    assert result.ret == EXIT_OK
     assert testdir.tmpdir.join(DEFAULT_QUARANTINE).check(exists=False)
 
 
@@ -100,7 +110,7 @@ def test_missing_quarantine(quarantine_path, testdir):
     result.stderr.fnmatch_lines(
         ["ERROR: Could not load quarantine:*'{}'".format(quarantine_path)]
     )
-    assert result.ret == pytest.ExitCode.USAGE_ERROR
+    assert result.ret == EXIT_USAGEERROR
 
 
 @pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
@@ -123,7 +133,7 @@ def test_full_quarantine(quarantine_path, testdir, failing_tests):
 
     result.stdout.fnmatch_lines(["quarantine: {}".format(quarantine_path)])
     result.assert_outcomes(passed=1, xfailed=2)
-    assert result.ret == pytest.ExitCode.OK
+    assert result.ret == EXIT_OK
 
 
 def test_partial_quarantine(testdir, failing_tests):
@@ -137,7 +147,7 @@ def test_partial_quarantine(testdir, failing_tests):
     result = testdir.runpytest("--quarantine")
 
     result.assert_outcomes(passed=1, error=1, xfailed=1)
-    assert result.ret == pytest.ExitCode.TESTS_FAILED
+    assert result.ret == EXIT_TESTSFAILED
 
 
 def test_passing_quarantine(testdir, failing_tests):
@@ -153,4 +163,4 @@ def test_passing_quarantine(testdir, failing_tests):
     result = testdir.runpytest("--quarantine")
 
     result.assert_outcomes(xfailed=2, xpassed=1)
-    assert result.ret == pytest.ExitCode.OK
+    assert result.ret == EXIT_OK
