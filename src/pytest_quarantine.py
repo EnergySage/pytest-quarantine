@@ -63,7 +63,7 @@ class QuarantinePlugin(object):
         except IOError as exc:
             raise pytest.UsageError("Could not load quarantine: " + str(exc))
 
-    def pytest_report_collectionfinish(self):
+    def pytest_report_header(self):
         """Display size of quarantine before running tests."""
         return "quarantine: {} in {}".format(
             _quarantine_size(self.nodeids), self.quarantine_path
