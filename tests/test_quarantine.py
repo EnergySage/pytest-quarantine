@@ -137,7 +137,10 @@ def test_full_quarantine(quarantine_path, testdir, error_and_failure):
     result = testdir.runpytest(*args)
 
     result.stdout.fnmatch_lines(
-        ["collected*", "quarantine: 2 items from {}".format(quarantine_path)]
+        [
+            "collected*",
+            "added mark.xfail to 2 of 2 items from {}".format(quarantine_path),
+        ]
     )
     result.assert_outcomes(passed=1, xfailed=2)
     assert result.ret == EXIT_OK
@@ -157,7 +160,10 @@ def test_partial_quarantine(testdir, error_and_failure):
     result = testdir.runpytest("--quarantine")
 
     result.stdout.fnmatch_lines(
-        ["collected*", "quarantine: 1 item from {} (2 total)".format(quarantine_path)]
+        [
+            "collected*",
+            "added mark.xfail to 1 of 2 items from {}".format(quarantine_path),
+        ]
     )
     result.assert_outcomes(passed=1, error=1, xfailed=1)
     assert result.ret == EXIT_TESTSFAILED
@@ -176,7 +182,10 @@ def test_only_extra_quarantine(testdir, error_and_failure):
     result = testdir.runpytest("--quarantine")
 
     result.stdout.fnmatch_lines(
-        ["collected*", "quarantine: 0 items from {} (1 total)".format(quarantine_path)]
+        [
+            "collected*",
+            "added mark.xfail to 0 of 1 item from {}".format(quarantine_path),
+        ]
     )
     result.assert_outcomes(passed=1, failed=1, error=1)
     assert result.ret == EXIT_TESTSFAILED
@@ -197,7 +206,10 @@ def test_passing_quarantine(testdir, error_and_failure):
     result = testdir.runpytest("--quarantine")
 
     result.stdout.fnmatch_lines(
-        ["collected*", "quarantine: 3 items from {}".format(quarantine_path)]
+        [
+            "collected*",
+            "added mark.xfail to 3 of 3 items from {}".format(quarantine_path),
+        ]
     )
     result.assert_outcomes(xfailed=2, xpassed=1)
     assert result.ret == EXIT_OK

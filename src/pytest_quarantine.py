@@ -10,9 +10,9 @@ import pytest
 DEFAULT_QUARANTINE = "quarantine.txt"
 
 
-def _quarantine_size(nodeids):
-    num_tests = len(nodeids)
-    return "{} item{}".format(num_tests, "" if num_tests == 1 else "s")
+def _item_count(nodeids):
+    count = len(nodeids)
+    return "{} item{}".format(count, "" if count == 1 else "s")
 
 
 class SaveQuarantinePlugin(object):
@@ -35,7 +35,7 @@ class SaveQuarantinePlugin(object):
         terminalreporter.write_sep(
             "-",
             "{} saved to {}".format(
-                _quarantine_size(self.quarantine_ids), self.quarantine_path
+                _item_count(self.quarantine_ids), self.quarantine_path
             ),
         )
 
@@ -72,14 +72,9 @@ class QuarantinePlugin(object):
 
     def pytest_report_collectionfinish(self):
         """Display number of quarantined items before running tests."""
-        report_status = "quarantine: {} from {}".format(
-            _quarantine_size(self.marked_ids), self.quarantine_path
+        return "added mark.xfail to {} of {} from {}".format(
+            len(self.marked_ids), _item_count(self.quarantine_ids), self.quarantine_path
         )
-
-        if len(self.marked_ids) != len(self.quarantine_ids):
-            report_status += " ({} total)".format(len(self.quarantine_ids))
-
-        return report_status
 
 
 def pytest_configure(config):
