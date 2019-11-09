@@ -31,9 +31,9 @@ def test_options(testdir):
 
 
 @pytest.fixture
-def error_and_failure(testdir):
+def error_failed_passed(testdir):
     return testdir.makepyfile(
-        test_failing_tests="""\
+        test_error_failed_passed="""\
         import pytest
 
         @pytest.fixture
@@ -43,10 +43,10 @@ def error_and_failure(testdir):
         def test_error(error):
             assert True
 
-        def test_failure():
+        def test_failed():
             assert False
 
-        def test_pass():
+        def test_passed():
             assert True
         """
     )
@@ -78,7 +78,7 @@ def testdir(testdir):
 
 
 @pytest.mark.parametrize("quarantine_path", [DEFAULT_QUARANTINE, ".quarantine"])
-def test_save_failing_tests(quarantine_path, testdir, error_and_failure):
+def test_save_failing_tests(quarantine_path, testdir, error_failed_passed):
     args = ["--save-quarantine"]
     if quarantine_path != DEFAULT_QUARANTINE:
         args.append(quarantine_path)
@@ -94,8 +94,8 @@ def test_save_failing_tests(quarantine_path, testdir, error_and_failure):
     assert testdir.path_has_content(
         quarantine_path,
         """\
-        test_failing_tests.py::test_error
-        test_failing_tests.py::test_failure
+        test_error_failed_passed.py::test_error
+        test_error_failed_passed.py::test_failed
         """,
     )
 
@@ -108,7 +108,7 @@ def test_no_save_with_passing_tests(testdir):
         """\
         import pytest
 
-        def test_pass():
+        def test_passed():
             assert True
         """
     )
@@ -136,7 +136,7 @@ def test_missing_quarantine(quarantine_path, testdir):
 
 
 @pytest.mark.parametrize("quarantine_path", [DEFAULT_QUARANTINE, ".quarantine"])
-def test_full_quarantine(quarantine_path, testdir, error_and_failure):
+def test_full_quarantine(quarantine_path, testdir, error_failed_passed):
     args = ["--quarantine"]
     if quarantine_path != DEFAULT_QUARANTINE:
         args.append(quarantine_path)
@@ -144,8 +144,8 @@ def test_full_quarantine(quarantine_path, testdir, error_and_failure):
     testdir.write_path(
         quarantine_path,
         """\
-        test_failing_tests.py::test_error
-        test_failing_tests.py::test_failure
+        test_error_failed_passed.py::test_error
+        test_error_failed_passed.py::test_failed
         """,
     )
 
@@ -161,15 +161,15 @@ def test_full_quarantine(quarantine_path, testdir, error_and_failure):
     assert result.ret == EXIT_OK
 
 
-def test_partial_quarantine(testdir, error_and_failure):
+def test_partial_quarantine(testdir, error_failed_passed):
     quarantine_path = DEFAULT_QUARANTINE
     args = ["--quarantine"]
 
     testdir.write_path(
         quarantine_path,
         """\
-        test_failing_tests.py::test_failure
-        test_failing_tests.py::test_extra
+        test_error_failed_passed.py::test_failed
+        test_error_failed_passed.py::test_extra
         """,
     )
 
@@ -185,14 +185,14 @@ def test_partial_quarantine(testdir, error_and_failure):
     assert result.ret == EXIT_TESTSFAILED
 
 
-def test_only_extra_quarantine(testdir, error_and_failure):
+def test_only_extra_quarantine(testdir, error_failed_passed):
     quarantine_path = DEFAULT_QUARANTINE
     args = ["--quarantine"]
 
     testdir.write_path(
         quarantine_path,
         """\
-        test_failing_tests.py::test_extra
+        test_error_failed_passed.py::test_extra
         """,
     )
 
@@ -208,16 +208,16 @@ def test_only_extra_quarantine(testdir, error_and_failure):
     assert result.ret == EXIT_TESTSFAILED
 
 
-def test_passing_quarantine(testdir, error_and_failure):
+def test_passing_quarantine(testdir, error_failed_passed):
     quarantine_path = DEFAULT_QUARANTINE
     args = ["--quarantine"]
 
     testdir.write_path(
         quarantine_path,
         """\
-        test_failing_tests.py::test_pass
-        test_failing_tests.py::test_error
-        test_failing_tests.py::test_failure
+        test_error_failed_passed.py::test_error
+        test_error_failed_passed.py::test_failed
+        test_error_failed_passed.py::test_passed
         """,
     )
 
