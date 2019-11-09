@@ -64,12 +64,6 @@ class QuarantinePlugin(object):
         except IOError as exc:
             raise pytest.UsageError("Could not load quarantine: " + str(exc))
 
-    def pytest_report_header(self):
-        """Display size of quarantine before running tests."""
-        return "quarantine: {} in {}".format(
-            _quarantine_size(self.nodeids), self.quarantine_path
-        )
-
     def pytest_itemcollected(self, item):
         """Mark a test as xfail if its ID is in the quarantine."""
         if item.nodeid in self.nodeids:
@@ -78,9 +72,14 @@ class QuarantinePlugin(object):
 
     def pytest_report_collectionfinish(self):
         """Display number of quarantined items before running tests."""
-        return "quarantined {}".format(
+        report_status = "quarantine: {} from {}".format(
             _quarantine_size(self.marked_ids), self.quarantine_path
         )
+
+        if len(self.marked_ids) != len(self.nodeids):
+            report_status += " ({} total)".format(len(self.nodeids))
+
+        return report_status
 
 
 def pytest_configure(config):
