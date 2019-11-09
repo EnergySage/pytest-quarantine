@@ -52,9 +52,9 @@ def two_failing_tests(testdir):
     )
 
 
-def test_no_report_header_without_options(testdir):
+def test_no_output_without_options(testdir):
     result = testdir.runpytest()
-    assert "quarantine: " not in result.outlines
+    assert DEFAULT_QUARANTINE not in result.stdout.str()
 
 
 @pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
@@ -83,6 +83,8 @@ def test_save_failing_tests(quarantine_path, testdir, two_failing_tests):
 
 
 def test_no_save_with_passing_tests(testdir):
+    quarantine_path = DEFAULT_QUARANTINE
+
     testdir.makepyfile(
         """\
         import pytest
@@ -96,7 +98,8 @@ def test_no_save_with_passing_tests(testdir):
 
     result.assert_outcomes(passed=1)
     assert result.ret == EXIT_OK
-    assert testdir.tmpdir.join(DEFAULT_QUARANTINE).check(exists=False)
+    assert quarantine_path not in result.stdout.str()
+    assert testdir.tmpdir.join(quarantine_path).check(exists=False)
 
 
 @pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])

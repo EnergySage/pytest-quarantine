@@ -29,6 +29,9 @@ class SaveQuarantinePlugin(object):
 
     def pytest_terminal_summary(self, terminalreporter):
         """Display size of quarantine after running tests."""
+        if not self.nodeids:
+            return
+
         terminalreporter.write_sep(
             "-",
             "{} saved to {}".format(
