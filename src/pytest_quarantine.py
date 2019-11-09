@@ -12,7 +12,7 @@ DEFAULT_QUARANTINE = "quarantine.txt"
 
 def _quarantine_size(nodeids):
     num_tests = len(nodeids)
-    return "{} test{}".format(num_tests, "" if num_tests == 1 else "s")
+    return "{} item{}".format(num_tests, "" if num_tests == 1 else "s")
 
 
 class SaveQuarantinePlugin(object):
