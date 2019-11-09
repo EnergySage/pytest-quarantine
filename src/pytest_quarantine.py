@@ -54,6 +54,7 @@ class QuarantinePlugin(object):
     def __init__(self, quarantine_path):
         self.quarantine_path = quarantine_path
         self.nodeids = set()
+        self.marked_ids = set()
 
     def pytest_sessionstart(self, session):
         """Read test ID's from a file into the quarantine."""
@@ -69,10 +70,17 @@ class QuarantinePlugin(object):
             _quarantine_size(self.nodeids), self.quarantine_path
         )
 
-    def pytest_runtest_setup(self, item):
+    def pytest_itemcollected(self, item):
         """Mark a test as xfail if its ID is in the quarantine."""
         if item.nodeid in self.nodeids:
             item.add_marker(pytest.mark.xfail(reason="Quarantined"))
+            self.marked_ids.add(item.nodeid)
+
+    def pytest_report_collectionfinish(self):
+        """Display number of quarantined items before running tests."""
+        return "quarantined {}".format(
+            _quarantine_size(self.marked_ids), self.quarantine_path
+        )
 
 
 def pytest_configure(config):

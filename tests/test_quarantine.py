@@ -31,7 +31,7 @@ def test_options(testdir):
 
 
 @pytest.fixture
-def two_failing_tests(testdir):
+def error_and_failure(testdir):
     return testdir.makepyfile(
         test_failing_tests="""\
         import pytest
@@ -58,7 +58,7 @@ def test_no_output_without_options(testdir):
 
 
 @pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
-def test_save_failing_tests(quarantine_path, testdir, two_failing_tests):
+def test_save_failing_tests(quarantine_path, testdir, error_and_failure):
     args = ["--save-quarantine"]
     if quarantine_path:
         args.append(quarantine_path)
@@ -119,7 +119,7 @@ def test_missing_quarantine(quarantine_path, testdir):
 
 
 @pytest.mark.parametrize("quarantine_path", [None, ".quarantine"])
-def test_full_quarantine(quarantine_path, testdir, two_failing_tests):
+def test_full_quarantine(quarantine_path, testdir, error_and_failure):
     args = ["--quarantine"]
     if quarantine_path:
         args.append(quarantine_path)
@@ -137,13 +137,17 @@ def test_full_quarantine(quarantine_path, testdir, two_failing_tests):
     result = testdir.runpytest(*args)
 
     result.stdout.fnmatch_lines(
-        ["quarantine: 2 tests in {}".format(quarantine_path), "collected*"]
+        [
+            "quarantine: 2 tests in {}".format(quarantine_path),
+            "collected*",
+            "quarantined 2 tests",
+        ]
     )
     result.assert_outcomes(passed=1, xfailed=2)
     assert result.ret == EXIT_OK
 
 
-def test_partial_quarantine(testdir, two_failing_tests):
+def test_partial_quarantine(testdir, error_and_failure):
     quarantine_path = DEFAULT_QUARANTINE
 
     quarantine = textwrap.dedent(
@@ -156,13 +160,40 @@ def test_partial_quarantine(testdir, two_failing_tests):
     result = testdir.runpytest("--quarantine")
 
     result.stdout.fnmatch_lines(
-        ["quarantine: 1 test in {}".format(quarantine_path), "collected*"]
+        [
+            "quarantine: 1 test in {}".format(quarantine_path),
+            "collected*",
+            "quarantined 1 test",
+        ]
     )
     result.assert_outcomes(passed=1, error=1, xfailed=1)
     assert result.ret == EXIT_TESTSFAILED
 
 
-def test_passing_quarantine(testdir, two_failing_tests):
+def test_extra_quarantine(testdir, error_and_failure):
+    quarantine_path = DEFAULT_QUARANTINE
+
+    quarantine = textwrap.dedent(
+        """\
+        test_failing_tests.py::test_extra
+        """
+    )
+    testdir.tmpdir.join(quarantine_path).write(quarantine)
+
+    result = testdir.runpytest("--quarantine")
+
+    result.stdout.fnmatch_lines(
+        [
+            "quarantine: 1 test in {}".format(quarantine_path),
+            "collected*",
+            "quarantined 0 tests",
+        ]
+    )
+    result.assert_outcomes(passed=1, failed=1, error=1)
+    assert result.ret == EXIT_TESTSFAILED
+
+
+def test_passing_quarantine(testdir, error_and_failure):
     quarantine_path = DEFAULT_QUARANTINE
 
     quarantine = textwrap.dedent(
@@ -176,5 +207,12 @@ def test_passing_quarantine(testdir, two_failing_tests):
 
     result = testdir.runpytest("--quarantine")
 
+    result.stdout.fnmatch_lines(
+        [
+            "quarantine: 3 tests in {}".format(quarantine_path),
+            "collected*",
+            "quarantined 3 tests",
+        ]
+    )
     result.assert_outcomes(xfailed=2, xpassed=1)
     assert result.ret == EXIT_OK
