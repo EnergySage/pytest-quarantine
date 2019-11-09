@@ -10,6 +10,11 @@ import pytest
 DEFAULT_QUARANTINE = "quarantine.txt"
 
 
+def _quarantine_size(nodeids):
+    num_tests = len(nodeids)
+    return "{} test{}".format(num_tests, "" if num_tests == 1 else "s")
+
+
 class SaveQuarantinePlugin(object):
     """Save the list of failing tests to a quarantine file."""
 
@@ -17,14 +22,19 @@ class SaveQuarantinePlugin(object):
         self.quarantine_path = quarantine_path
         self.nodeids = set()
 
-    def pytest_report_header(self, config):
-        """Display configuration at runtime."""
-        return "{}: {}".format("save_quarantine", self.quarantine_path)
-
     def pytest_runtest_logreport(self, report):
         """Save the ID of a failed test to the quarantine."""
         if not report.passed:
             self.nodeids.add(report.nodeid)
+
+    def pytest_terminal_summary(self, terminalreporter):
+        """Display size of quarantine after running tests."""
+        terminalreporter.write_sep(
+            "-",
+            "{} saved to {}".format(
+                _quarantine_size(self.nodeids), self.quarantine_path
+            ),
+        )
 
     def pytest_sessionfinish(self, session):
         """Write the ID's of quarantined tests to a file."""
@@ -51,10 +61,9 @@ class QuarantinePlugin(object):
             raise pytest.UsageError("Could not load quarantine: " + str(exc))
 
     def pytest_report_collectionfinish(self):
-        """Display configuration at runtime."""
-        num_tests = len(self.nodeids)
-        return "quarantine: {} test{} in {}".format(
-            num_tests, "" if num_tests == 1 else "s", self.quarantine_path
+        """Display size of quarantine before running tests."""
+        return "quarantine: {} in {}".format(
+            _quarantine_size(self.nodeids), self.quarantine_path
         )
 
     def pytest_runtest_setup(self, item):
