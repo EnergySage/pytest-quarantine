@@ -32,6 +32,7 @@ def test_options(testdir):
 
 @pytest.fixture
 def error_failed_passed(testdir):
+    """Create test_error_failed_passed.py with one test for each outcome."""
     return testdir.makepyfile(
         test_error_failed_passed="""\
         import pytest
@@ -59,6 +60,8 @@ def test_no_output_without_options(testdir):
 
 @pytest.fixture
 def testdir(testdir):
+    """Return default testdir fixture with additional helper methods."""
+
     def _path_exists(path):
         return testdir.tmpdir.join(path).check(exists=True)
 
