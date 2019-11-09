@@ -50,9 +50,12 @@ class QuarantinePlugin(object):
         except IOError as exc:
             raise pytest.UsageError("Could not load quarantine: " + str(exc))
 
-    def pytest_report_header(self, config):
+    def pytest_report_collectionfinish(self):
         """Display configuration at runtime."""
-        return "{}: {}".format("quarantine", self.quarantine_path)
+        num_tests = len(self.nodeids)
+        return "quarantine: {} test{} in {}".format(
+            num_tests, "" if num_tests == 1 else "s", self.quarantine_path
+        )
 
     def pytest_runtest_setup(self, item):
         """Mark a test as xfail if its ID is in the quarantine."""
