@@ -72,3 +72,7 @@ target/
 
 # pyenv
 .python-version
+
+# pytest-quarantine development
+quarantine.txt
+.quarantine

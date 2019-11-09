@@ -25,7 +25,7 @@ With this plugin, you can save all of existing failures to a file (the quarantin
 
 ## Installation
 
-Via [pip](https://pypi.org/project/pip/) from [PyPI](https://pypi.org/project/pytest-quarantine):
+Via [pip](https://pypi.org/project/pip/) from [PyPI](https://pypi.org/project/pytest-quarantine) in an active [virtual environment](https://docs.python.org/3/tutorial/venv.html):
 
 ```
 $ pip install pytest-quarantine
@@ -37,8 +37,14 @@ Run your test suite and save the failing tests to `quarantine.txt`:
 
 ```
 $ pytest --save-quarantine
+============================= test session starts ==============================
+...
+collected 1380 items
 
-= 629 failed, 719 passed, 32 error in 312.56 seconds =
+...
+
+---------------------- 661 items saved to quarantine.txt -----------------------
+============== 629 failed, 719 passed, 32 error in 312.56 seconds ==============
 ```
 
 Add `quarantine.txt` to your version control system.
@@ -47,8 +53,14 @@ Run your test suite with the quarantined tests marked as expected failures:
 
 ```
 $ pytest --quarantine
+============================= test session starts ==============================
+...
+collected 1380 items
+added mark.xfail to 661 of 661 items from quarantine.txt
 
-= 719 passed, 661 xfailed in 300.51 seconds =
+...
+
+================== 719 passed, 661 xfailed in 300.51 seconds ===================
 ```
 
 When the expected failures eventually pass (i.e., they get counted as `xpassed`), they can be removed manually from `quarantine.txt`, or automatically using `--save-quarantine`. Note that the latter will overwrite the contents of the quarantine, so it's best to only use it when running the entire test suite.
