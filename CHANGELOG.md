@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Report size of quarantine ([#20](https://github.com/EnergySage/pytest-quarantine/pull/20))
+- Use attrs for readability ([#23](https://github.com/EnergySage/pytest-quarantine/pull/23))
+
+### Changed
+
+- Refactor plugin ([#18](https://github.com/EnergySage/pytest-quarantine/pull/18))
+- Show UsageError for missing quarantine file ([#19](https://github.com/EnergySage/pytest-quarantine/pull/19))
+- Refactor tests ([#21](https://github.com/EnergySage/pytest-quarantine/pull/21))
+- Don't show quarantine stats with quiet option ([#22](https://github.com/EnergySage/pytest-quarantine/pull/22))
+
 ## [1.0.0] - 2019-11-03
 
 ### Added
