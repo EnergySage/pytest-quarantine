@@ -51,8 +51,9 @@ class SaveQuarantinePlugin(object):
 class QuarantinePlugin(object):
     """Mark each test listed in a quarantine file as xfail."""
 
-    def __init__(self, quarantine_path):
+    def __init__(self, quarantine_path, verbose):
         self.quarantine_path = quarantine_path
+        self.verbose = verbose
         self.quarantine_ids = set()
         self.marked_ids = set()
 
@@ -72,9 +73,12 @@ class QuarantinePlugin(object):
 
     def pytest_report_collectionfinish(self):
         """Display number of quarantined items before running tests."""
-        return "added mark.xfail to {} of {} from {}".format(
-            len(self.marked_ids), _item_count(self.quarantine_ids), self.quarantine_path
-        )
+        if self.verbose >= 0:
+            return "added mark.xfail to {} of {} from {}".format(
+                len(self.marked_ids),
+                _item_count(self.quarantine_ids),
+                self.quarantine_path,
+            )
 
 
 def pytest_configure(config):
@@ -88,7 +92,8 @@ def pytest_configure(config):
     quarantine_path = config.getoption("quarantine")
     if quarantine_path:
         config.pluginmanager.register(
-            QuarantinePlugin(quarantine_path), "quarantine_plugin"
+            QuarantinePlugin(quarantine_path, config.getoption("verbose")),
+            "quarantine_plugin",
         )
 
 
