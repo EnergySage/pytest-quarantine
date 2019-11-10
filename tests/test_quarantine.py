@@ -234,3 +234,19 @@ def test_passing_quarantine(testdir, error_failed_passed):
     )
     result.assert_outcomes(xfailed=2, xpassed=1)
     assert result.ret == EXIT_OK
+
+
+def test_no_report_with_quiet_option(testdir, error_failed_passed):
+    quarantine_path = DEFAULT_QUARANTINE
+    args = ["-q", "--quarantine"]
+
+    testdir.write_path(
+        quarantine_path,
+        """\
+        test_error_failed_passed.py::test_error
+        """,
+    )
+
+    result = testdir.runpytest(*args)
+
+    assert quarantine_path not in result.stdout.str()
