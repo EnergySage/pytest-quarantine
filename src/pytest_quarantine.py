@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals
 
+import attr
 import pytest
 
 
@@ -15,12 +16,12 @@ def _item_count(nodeids):
     return "{} item{}".format(count, "" if count == 1 else "s")
 
 
+@attr.s(cmp=False)
 class SaveQuarantinePlugin(object):
     """Save the list of failing tests to a quarantine file."""
 
-    def __init__(self, quarantine_path):
-        self.quarantine_path = quarantine_path
-        self.quarantine_ids = set()
+    quarantine_path = attr.ib()
+    quarantine_ids = attr.ib(init=False, factory=set)
 
     def pytest_runtest_logreport(self, report):
         """Save the ID of a failed test to the quarantine."""
@@ -48,14 +49,14 @@ class SaveQuarantinePlugin(object):
             f.writelines(nodeid + "\n" for nodeid in sorted(self.quarantine_ids))
 
 
+@attr.s(cmp=False)
 class QuarantinePlugin(object):
     """Mark each test listed in a quarantine file as xfail."""
 
-    def __init__(self, quarantine_path, verbose):
-        self.quarantine_path = quarantine_path
-        self.verbose = verbose
-        self.quarantine_ids = set()
-        self.marked_ids = set()
+    quarantine_path = attr.ib()
+    verbose = attr.ib()
+    quarantine_ids = attr.ib(init=False, factory=set)
+    marked_ids = attr.ib(init=False, factory=set)
 
     def pytest_sessionstart(self, session):
         """Read test ID's from a file into the quarantine."""
