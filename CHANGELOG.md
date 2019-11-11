@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.1.0] - 2019-11-11
+
 ### Added
 
 - Report size of quarantine ([#20](https://github.com/EnergySage/pytest-quarantine/pull/20))
@@ -51,7 +53,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Initial project structure, tooling, and contributing guidelines
 
-[Unreleased]: https://github.com/EnergySage/pytest-quarantine/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/EnergySage/pytest-quarantine/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/EnergySage/pytest-quarantine/releases/tag/1.1.0
 [1.0.0]: https://github.com/EnergySage/pytest-quarantine/releases/tag/1.0.0
 [0.0.3]: https://github.com/EnergySage/pytest-quarantine/releases/tag/0.0.3
 [0.0.2]: https://github.com/EnergySage/pytest-quarantine/releases/tag/0.0.2
