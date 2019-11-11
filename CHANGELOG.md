@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Show UsageError for missing quarantine file ([#19](https://github.com/EnergySage/pytest-quarantine/pull/19))
 - Refactor tests ([#21](https://github.com/EnergySage/pytest-quarantine/pull/21))
 - Don't show quarantine stats with quiet option ([#22](https://github.com/EnergySage/pytest-quarantine/pull/22))
+- Update docs ([#24](https://github.com/EnergySage/pytest-quarantine/pull/24))
 
 ## [1.0.0] - 2019-11-03
 
