@@ -96,3 +96,12 @@ This project was initially developed at [EnergySage](https://www.energysage.com/
 The name was inspired by the [quarantine feature](https://confluence.atlassian.com/bamboo/quarantining-failing-tests-289276886.html) of the Bamboo CI/CD service. [Pros and Cons of Quarantined Tests](https://marklapierre.net/pros-cons-quarantined-tests/) is a good introduction to the concept (not related to this project).
 
 The repository was generated with [Cookiecutter](https://github.com/audreyr/cookiecutter) using the [cookiecutter-pytest-plugin](https://github.com/pytest-dev/cookiecutter-pytest-plugin) template. The layout and tooling has been heavily modified since then, but it was very helpful to start.
+
+Some other helpful resources were:
+
+- [Starting an Open Source Project | Open Source Guides](https://opensource.guide/starting-a-project/)
+- [Testing & Packaging | Hynek Schlawack](https://hynek.me/articles/testing-packaging/)
+- [Maintaining a Python Project When It’s Not Your Job | Hynek Schlawack](https://hynek.me/talks/python-foss/)
+- [Python Testing with pytest | Brian Okken | The Pragmatic Bookshelf](https://pragprog.com/book/bopytest/python-testing-with-pytest)
+- [Developing better test suites for pytest plugins | Raphael Pierzina](https://raphael.codes/blog/test-suites-for-pytest-plugins/)
+- [GitHub search](https://github.com/search) for examples from `org:pytest-dev org:pypa org:pycqa org:pallets org:encode`
