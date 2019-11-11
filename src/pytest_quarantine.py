@@ -1,3 +1,12 @@
+"""A plugin for pytest to manage expected test failures.
+
+Saves the list of failing tests, so that they can be automatically marked as expected
+failures on future test runs.
+
+Inspired by:
+    - https://github.com/pytest-dev/pytest/blob/master/src/_pytest/cacheprovider.py
+    - https://github.com/hackebrot/pytest-md/blob/master/src/pytest_md/plugin.py
+"""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals
@@ -18,7 +27,13 @@ def _item_count(nodeids):
 
 @attr.s(cmp=False)
 class SaveQuarantinePlugin(object):
-    """Save the list of failing tests to a quarantine file."""
+    """Save the list of failing tests to a quarantine file.
+
+    Attributes:
+        quarantine_path (str): The path to the quarantine file
+        quarantine_ids (Set[int]):
+            The ID's of failed tests to write to ``quarantine_path``
+    """
 
     quarantine_path = attr.ib()
     quarantine_ids = attr.ib(init=False, factory=set)
@@ -51,7 +66,14 @@ class SaveQuarantinePlugin(object):
 
 @attr.s(cmp=False)
 class QuarantinePlugin(object):
-    """Mark each test listed in a quarantine file as xfail."""
+    """Mark each test listed in a quarantine file as xfail.
+
+    Attributes:
+        quarantine_path (str): The path to the quarantine file
+        verbose (int): The value of pytest's "verbose" config option
+        quarantine_ids (Set[int]): The test ID's read from ``quarantine_path``
+        marked_ids (Set[int]): The ID's of collected tests marked as xfail
+    """
 
     quarantine_path = attr.ib()
     verbose = attr.ib()
