@@ -40,7 +40,7 @@ class SaveQuarantinePlugin(object):
 
     def pytest_runtest_logreport(self, report):
         """Save the ID of a failed test to the quarantine."""
-        if not report.passed:
+        if report.failed:
             self.quarantine_ids.add(report.nodeid)
 
     def pytest_terminal_summary(self, terminalreporter):

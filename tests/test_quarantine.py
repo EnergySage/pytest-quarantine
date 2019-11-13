@@ -103,7 +103,7 @@ def test_save_failing_tests(quarantine_path, testdir, error_failed_passed):
     )
 
 
-def test_no_save_with_passing_tests(testdir):
+def test_dont_save_other_outcomes(testdir):
     quarantine_path = DEFAULT_QUARANTINE
     args = ["--save-quarantine"]
 
@@ -113,12 +113,24 @@ def test_no_save_with_passing_tests(testdir):
 
         def test_passed():
             assert True
+
+        @pytest.mark.skip
+        def test_skipped():
+            assert False
+
+        @pytest.mark.xfail
+        def test_xfailed():
+            assert False
+
+        @pytest.mark.xfail
+        def test_xpassed():
+            assert True
         """
     )
 
     result = testdir.runpytest(*args)
 
-    result.assert_outcomes(passed=1)
+    result.assert_outcomes(passed=1, skipped=1, xpassed=1, xfailed=1)
     assert result.ret == EXIT_OK
     assert quarantine_path not in result.stdout.str()
     assert not testdir.path_exists(quarantine_path)
