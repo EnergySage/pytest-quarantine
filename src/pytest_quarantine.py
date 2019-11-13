@@ -45,9 +45,6 @@ class SaveQuarantinePlugin(object):
 
     def pytest_terminal_summary(self, terminalreporter):
         """Display size of quarantine after running tests."""
-        if not self.quarantine_ids:
-            return
-
         terminalreporter.write_sep(
             "-",
             "{} saved to {}".format(
@@ -56,10 +53,11 @@ class SaveQuarantinePlugin(object):
         )
 
     def pytest_sessionfinish(self, session):
-        """Write the ID's of quarantined tests to a file."""
-        if not self.quarantine_ids:
-            return
+        """Write the ID's of quarantined tests to a file.
 
+        Writes an empty file if all tests are passing, to remove previously failed tests
+        from the quarantine.
+        """
         with open(self.quarantine_path, "w") as f:
             f.writelines(nodeid + "\n" for nodeid in sorted(self.quarantine_ids))
 
