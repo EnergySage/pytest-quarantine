@@ -62,11 +62,6 @@ def test_no_output_without_options(testdir):
 def testdir(testdir):
     """Return default testdir fixture with additional helper methods."""
 
-    def _path_exists(path):
-        return testdir.tmpdir.join(path).check(exists=True)
-
-    testdir.path_exists = _path_exists
-
     def _path_has_content(path, content):
         return testdir.tmpdir.join(path).read() == textwrap.dedent(content)
 
