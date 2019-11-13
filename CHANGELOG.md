@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- Only save failed tests (not skipped) to quarantine ([#27](https://github.com/EnergySage/pytest-quarantine/pull/27))
+- Write empty quarantine when all tests pass ([#28](https://github.com/EnergySage/pytest-quarantine/pull/28))
+
 ## [1.1.0] - 2019-11-11
 
 ### Added
