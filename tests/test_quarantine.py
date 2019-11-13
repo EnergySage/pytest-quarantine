@@ -130,10 +130,42 @@ def test_dont_save_other_outcomes(testdir):
 
     result = testdir.runpytest(*args)
 
+    result.stdout.fnmatch_lines(
+        ["*- 0 items saved to {} -*".format(quarantine_path), "=*skipped*"]
+    )
     result.assert_outcomes(passed=1, skipped=1, xpassed=1, xfailed=1)
     assert result.ret == EXIT_OK
-    assert quarantine_path not in result.stdout.str()
-    assert not testdir.path_exists(quarantine_path)
+
+    assert testdir.path_has_content(quarantine_path, "")
+
+
+def test_save_empty_quarantine(testdir):
+    quarantine_path = DEFAULT_QUARANTINE
+    args = ["--save-quarantine"]
+
+    testdir.makepyfile(
+        test_xpassed="""\
+        def test_passed():
+            assert True
+        """
+    )
+
+    testdir.write_path(
+        quarantine_path,
+        """\
+        test_xpassed.py::test_passed
+        """,
+    )
+
+    result = testdir.runpytest(*args)
+
+    result.stdout.fnmatch_lines(
+        ["*- 0 items saved to {} -*".format(quarantine_path), "=*passed*"]
+    )
+    result.assert_outcomes(passed=1)
+    assert result.ret == EXIT_OK
+
+    assert testdir.path_has_content(quarantine_path, "")
 
 
 @pytest.mark.parametrize("quarantine_path", [DEFAULT_QUARANTINE, ".quarantine"])
