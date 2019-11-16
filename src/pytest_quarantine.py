@@ -15,11 +15,6 @@ import attr
 import pytest
 
 
-# TODO: Guarantee this is opened from pytest's root dir
-# (to allow running pytest in a subdirectory)
-DEFAULT_QUARANTINE = "quarantine.txt"
-
-
 def _item_count(nodeids):
     count = len(nodeids)
     return "{} item{}".format(count, "" if count == 1 else "s")
