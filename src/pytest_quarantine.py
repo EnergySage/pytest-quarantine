@@ -124,16 +124,12 @@ def pytest_addoption(parser):
 
     group.addoption(
         "--save-quarantine",
-        nargs="?",
-        const=DEFAULT_QUARANTINE,
         metavar="PATH",
-        help="Write failing tests to %(metavar)s (default: %(const)s)",
+        help="Write failing test ID's to %(metavar)s",
     )
 
     group.addoption(
         "--quarantine",
-        nargs="?",
-        const=DEFAULT_QUARANTINE,
         metavar="PATH",
-        help="Mark tests listed in %(metavar)s with `xfail` (default: %(const)s)",
+        help="Mark test ID's listed in %(metavar)s with `xfail`",
     )
