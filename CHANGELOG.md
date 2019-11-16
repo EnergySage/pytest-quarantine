@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Fixed
+
+- --save-quarantine can overwrite test files ([#29](https://github.com/EnergySage/pytest-quarantine/issues/29))
+
 ## [1.2.0] - 2019-11-13
 
 ### Changed
