@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- Require quarantine path on command line ([#30](https://github.com/EnergySage/pytest-quarantine/issues/30))
+
 ### Fixed
 
 - --save-quarantine can overwrite test files ([#29](https://github.com/EnergySage/pytest-quarantine/issues/29))
