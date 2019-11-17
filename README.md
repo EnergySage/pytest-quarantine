@@ -36,7 +36,7 @@ $ pip install pytest-quarantine
 Run your test suite and save the failing tests to `quarantine.txt`:
 
 ```
-$ pytest --save-quarantine
+$ pytest --save-quarantine=quarantine.txt
 ============================= test session starts ==============================
 ...
 collected 1380 items
@@ -52,7 +52,7 @@ Add `quarantine.txt` to your version control system.
 Run your test suite with the quarantined tests marked as expected failures:
 
 ```
-$ pytest --quarantine
+$ pytest --quarantine=quarantine.txt
 ============================= test session starts ==============================
 ...
 collected 1380 items
@@ -64,14 +64,6 @@ added mark.xfail to 661 of 661 items from quarantine.txt
 ```
 
 When the expected failures eventually pass (i.e., they get counted as `xpassed`), they can be removed manually from `quarantine.txt`, or automatically using `--save-quarantine`. Note that the latter will overwrite the contents of the quarantine, so it's best to only use it when running the entire test suite.
-
-The default `quarantine.txt` can be changed by an optional argument (for example, if test failures differ between environments, or for multiple test suites):
-
-```
-$ pytest --save-quarantine=quarantine-py3.txt
-
-$ pytest --quarantine=quarantine-py3.txt
-```
 
 ## Getting help
 

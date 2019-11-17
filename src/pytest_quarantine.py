@@ -15,11 +15,6 @@ import attr
 import pytest
 
 
-# TODO: Guarantee this is opened from pytest's root dir
-# (to allow running pytest in a subdirectory)
-DEFAULT_QUARANTINE = "quarantine.txt"
-
-
 def _item_count(nodeids):
     count = len(nodeids)
     return "{} item{}".format(count, "" if count == 1 else "s")
@@ -124,16 +119,12 @@ def pytest_addoption(parser):
 
     group.addoption(
         "--save-quarantine",
-        nargs="?",
-        const=DEFAULT_QUARANTINE,
         metavar="PATH",
-        help="Write failing tests to %(metavar)s (default: %(const)s)",
+        help="Write failing test ID's to %(metavar)s",
     )
 
     group.addoption(
         "--quarantine",
-        nargs="?",
-        const=DEFAULT_QUARANTINE,
         metavar="PATH",
-        help="Mark tests listed in %(metavar)s with `xfail` (default: %(const)s)",
+        help="Mark test ID's listed in %(metavar)s with `xfail`",
     )
