@@ -18,9 +18,51 @@ import attr
 import pytest
 
 
+def _file_path(value):
+    if os.path.isdir(value):
+        raise argparse.ArgumentTypeError(
+            "'{}' is a directory; must be a file path".format(value)
+        )
+    return value
+
+
 def _item_count(nodeids):
     count = len(nodeids)
     return "{} item{}".format(count, "" if count == 1 else "s")
+
+
+def pytest_addoption(parser):
+    """Add command line options to the 'quarantine' group."""
+    group = parser.getgroup("quarantine")
+
+    group.addoption(
+        "--save-quarantine",
+        metavar="PATH",
+        type=_file_path,
+        help="Write failing test ID's to %(metavar)s",
+    )
+
+    group.addoption(
+        "--quarantine",
+        metavar="PATH",
+        help="Mark test ID's listed in %(metavar)s with `xfail`",
+    )
+
+
+def pytest_configure(config):
+    """Register the plugin functionality."""
+    save_quarantine_path = config.getoption("save_quarantine")
+    if save_quarantine_path:
+        config.pluginmanager.register(
+            SaveQuarantinePlugin(save_quarantine_path), "save_quarantine_plugin"
+        )
+
+    quarantine_path = config.getoption("quarantine")
+    if quarantine_path:
+        config.pluginmanager.register(
+            QuarantinePlugin(quarantine_path, config.getoption("verbose")),
+            "quarantine_plugin",
+        )
 
 
 @attr.s(cmp=False)
@@ -98,45 +140,3 @@ class QuarantinePlugin(object):
                 _item_count(self.quarantine_ids),
                 self.quarantine_path,
             )
-
-
-def pytest_configure(config):
-    """Register the plugin functionality."""
-    save_quarantine_path = config.getoption("save_quarantine")
-    if save_quarantine_path:
-        config.pluginmanager.register(
-            SaveQuarantinePlugin(save_quarantine_path), "save_quarantine_plugin"
-        )
-
-    quarantine_path = config.getoption("quarantine")
-    if quarantine_path:
-        config.pluginmanager.register(
-            QuarantinePlugin(quarantine_path, config.getoption("verbose")),
-            "quarantine_plugin",
-        )
-
-
-def pytest_addoption(parser):
-    """Add command line options to the 'quarantine' group."""
-    group = parser.getgroup("quarantine")
-
-    group.addoption(
-        "--save-quarantine",
-        metavar="PATH",
-        type=_filename,
-        help="Write failing test ID's to %(metavar)s",
-    )
-
-    group.addoption(
-        "--quarantine",
-        metavar="PATH",
-        help="Mark test ID's listed in %(metavar)s with `xfail`",
-    )
-
-
-def _filename(value):
-    if os.path.isdir(value):
-        raise argparse.ArgumentTypeError(
-            "'{}' is a directory; must be a file path".format(value)
-        )
-    return value
