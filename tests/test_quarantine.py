@@ -158,6 +158,15 @@ def test_save_empty_quarantine(testdir):
     assert testdir.path_has_content(QUARANTINE_PATH, "")
 
 
+def test_save_dir_error(testdir, error_failed_passed):
+    testdir.mkdir("quarantine")
+
+    result = testdir.runpytest("--save-quarantine", "quarantine")
+
+    assert result.ret == EXIT_USAGEERROR
+    result.stderr.fnmatch_lines(["*error:*file path*"])
+
+
 def test_missing_quarantine(testdir):
     result = testdir.runpytest("--quarantine", QUARANTINE_PATH)
 

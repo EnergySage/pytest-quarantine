@@ -11,6 +11,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals
 
+import argparse
+import os
+
 import attr
 import pytest
 
@@ -120,6 +123,7 @@ def pytest_addoption(parser):
     group.addoption(
         "--save-quarantine",
         metavar="PATH",
+        type=_filename,
         help="Write failing test ID's to %(metavar)s",
     )
 
@@ -128,3 +132,11 @@ def pytest_addoption(parser):
         metavar="PATH",
         help="Mark test ID's listed in %(metavar)s with `xfail`",
     )
+
+
+def _filename(value):
+    if os.path.isdir(value):
+        raise argparse.ArgumentTypeError(
+            "'{}' is a directory; must be a file path".format(value)
+        )
+    return value
