@@ -15,6 +15,7 @@ from __future__ import unicode_literals
 import argparse
 import logging
 import os
+from io import open
 
 import attr
 import pytest
@@ -90,7 +91,7 @@ class SaveQuarantinePlugin(object):
         Results in an empty file if all tests are passing, to remove previously failed
         tests from the quarantine.
         """
-        self.quarantine = open(self.quarantine_path, "w")
+        self.quarantine = open(self.quarantine_path, "w", buffering=1, encoding="utf-8")
 
     def pytest_runtest_logreport(self, report):
         """Save the ID of a failed test to the quarantine."""
@@ -133,7 +134,7 @@ class QuarantinePlugin(object):
     def pytest_sessionstart(self, session):
         """Read test ID's from a file into the quarantine."""
         try:
-            with open(self.quarantine_path) as f:
+            with open(self.quarantine_path, encoding="utf-8") as f:
                 self.quarantine_ids = {nodeid.strip() for nodeid in f}
         except IOError as exc:
             raise pytest.UsageError("Could not load quarantine: " + str(exc))
