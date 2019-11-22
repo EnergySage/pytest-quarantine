@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals
 
+import logging
 import textwrap
 
 import pytest
@@ -156,6 +157,15 @@ def test_save_empty_quarantine(testdir):
     )
 
     assert testdir.path_has_content(QUARANTINE_PATH, "")
+
+
+def test_save_closes_quarantine(caplog, testdir):
+    caplog.set_level(logging.DEBUG)
+
+    result = testdir.runpytest("--save-quarantine", QUARANTINE_PATH)
+
+    result.stdout.fnmatch_lines(["*- 0 items saved to {} -*".format(QUARANTINE_PATH)])
+    assert "Closed " + QUARANTINE_PATH in caplog.text
 
 
 def test_save_dir_error(testdir, error_failed_passed):

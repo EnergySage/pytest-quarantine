@@ -13,10 +13,14 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import argparse
+import logging
 import os
 
 import attr
 import pytest
+
+
+logger = logging.getLogger(__name__)
 
 
 def _file_path(value):
@@ -107,6 +111,7 @@ class SaveQuarantinePlugin(object):
         """Close the quarantine."""
         if self.quarantine:
             self.quarantine.close()
+            logger.debug("Closed " + self.quarantine_path)
 
 
 @attr.s(cmp=False)
