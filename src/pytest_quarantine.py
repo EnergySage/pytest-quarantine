@@ -47,7 +47,12 @@ class SaveQuarantinePlugin(object):
         Results in an empty file if all tests are passing, to remove previously failed
         tests from the quarantine.
         """
-        self.quarantine = open(self.quarantine_path, "w", buffering=1, encoding="utf-8")
+        try:
+            self.quarantine = open(
+                self.quarantine_path, "w", buffering=1, encoding="utf-8"
+            )
+        except IOError as exc:
+            raise pytest.UsageError("Could not open quarantine: " + str(exc))
 
     def pytest_runtest_logreport(self, report):
         """Save the ID of a failed test to the quarantine."""
@@ -93,7 +98,7 @@ class QuarantinePlugin(object):
             with open(self.quarantine_path, encoding="utf-8") as f:
                 self.quarantine_ids = {nodeid.strip() for nodeid in f}
         except IOError as exc:
-            raise pytest.UsageError("Could not load quarantine: " + str(exc))
+            raise pytest.UsageError("Could not open quarantine: " + str(exc))
 
     def pytest_itemcollected(self, item):
         """Mark a test as xfail if its ID is in the quarantine."""
