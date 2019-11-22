@@ -182,12 +182,14 @@ def test_save_always_closes_quarantine(caplog, testdir):
 
 
 def test_save_dir_error(testdir, error_failed_passed):
-    testdir.mkdir("quarantine")
+    quarantine_path = "quarantine"
 
-    result = testdir.runpytest("--save-quarantine", "quarantine")
+    testdir.mkdir(quarantine_path)
 
-    assert result.ret == EXIT_USAGEERROR
-    result.stderr.fnmatch_lines(["*error:*file path*"])
+    result = testdir.runpytest("--save-quarantine", quarantine_path)
+
+    assert result.ret == EXIT_INTERNALERROR
+    result.stdout.fnmatch_lines(["INTERNALERROR>*'{}'*".format(quarantine_path)])
 
 
 def test_missing_quarantine(testdir):

@@ -12,9 +12,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals
 
-import argparse
 import logging
-import os
 from io import open
 
 import attr
@@ -22,14 +20,6 @@ import pytest
 
 
 logger = logging.getLogger(__name__)
-
-
-def _file_path(value):
-    if os.path.isdir(value):
-        raise argparse.ArgumentTypeError(
-            "'{}' is a directory; must be a file path".format(value)
-        )
-    return value
 
 
 def _item_count(count):
@@ -43,7 +33,6 @@ def pytest_addoption(parser):
     group.addoption(
         "--save-quarantine",
         metavar="PATH",
-        type=_file_path,
         help="Write failing test ID's to %(metavar)s",
     )
 
