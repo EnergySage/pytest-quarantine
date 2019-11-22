@@ -107,7 +107,7 @@ class SaveQuarantinePlugin(object):
             ),
         )
 
-    def pytest_sessionfinish(self, session):
+    def pytest_unconfigure(self):
         """Close the quarantine."""
         if self.quarantine:
             self.quarantine.close()
