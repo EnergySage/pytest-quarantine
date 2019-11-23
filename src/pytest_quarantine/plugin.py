@@ -49,14 +49,14 @@ def pytest_configure(config):
     save_quarantine_path = config.getoption("save_quarantine")
     if save_quarantine_path:
         config.pluginmanager.register(
-            SaveQuarantinePlugin(save_quarantine_path), "save_quarantine_plugin"
+            SaveQuarantinePlugin(save_quarantine_path), "save_quarantine"
         )
 
-    quarantine_path = config.getoption("quarantine")
-    if quarantine_path:
+    use_quarantine_path = config.getoption("quarantine")
+    if use_quarantine_path:
+        verbose = config.getoption("verbose")
         config.pluginmanager.register(
-            QuarantinePlugin(quarantine_path, config.getoption("verbose")),
-            "quarantine_plugin",
+            UseQuarantinePlugin(use_quarantine_path, verbose), "use_quarantine"
         )
 
 
@@ -115,7 +115,7 @@ class SaveQuarantinePlugin(object):
 
 
 @attr.s(cmp=False)
-class QuarantinePlugin(object):
+class UseQuarantinePlugin(object):
     """Mark each test listed in a quarantine file as xfail.
 
     Attributes:
