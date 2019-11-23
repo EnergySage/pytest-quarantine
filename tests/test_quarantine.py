@@ -3,6 +3,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import logging
+import os
 import textwrap
 
 import pytest
@@ -88,17 +89,18 @@ def testdir(testdir):
     return testdir
 
 
-def test_save_failing_tests(testdir, error_failed_passed):
-    result = testdir.runpytest("--save-quarantine", QUARANTINE_PATH)
+@pytest.mark.parametrize("quarantine_path", [QUARANTINE_PATH, "reports/quarantine.txt"])
+def test_save_failing_tests(quarantine_path, testdir, error_failed_passed):
+    result = testdir.runpytest("--save-quarantine", quarantine_path)
 
     assert result.ret == EXIT_TESTSFAILED
     result.assert_outcomes(passed=1, failed=1, error=1)
     result.stdout.fnmatch_lines(
-        ["*- 2 items saved to {} -*".format(QUARANTINE_PATH), "=*failed*"]
+        ["*- 2 items saved to {} -*".format(quarantine_path), "=*failed*"]
     )
 
     assert testdir.path_has_content(
-        QUARANTINE_PATH,
+        quarantine_path,
         """\
         test_error_failed_passed.py::test_error
         test_error_failed_passed.py::test_failed
@@ -181,15 +183,30 @@ def test_save_always_closes_quarantine(caplog, testdir):
     assert "Closed " + QUARANTINE_PATH in caplog.text
 
 
-def test_save_dir_error(testdir, error_failed_passed):
-    quarantine_path = "quarantine"
-    testdir.mkdir(quarantine_path)
+def test_make_dir_error(testdir):
+    quarantine_dir = "reports"
+    quarantine_path = os.path.join(quarantine_dir, QUARANTINE_PATH)
+
+    # Cause makedirs() to fail by creating a file where the directory would be
+    testdir.write_path(quarantine_dir, "")
 
     result = testdir.runpytest("--save-quarantine", quarantine_path)
 
     assert result.ret == EXIT_USAGEERROR
     result.stderr.fnmatch_lines(
-        ["ERROR: Could not open quarantine:*'{}'".format(quarantine_path)]
+        ["ERROR: Could not open quarantine:*{}*".format(quarantine_dir)]
+    )
+
+
+def test_save_path_error(testdir, error_failed_passed):
+    # Cause open() to fail by creating a directory where the file should be
+    testdir.mkdir(QUARANTINE_PATH)
+
+    result = testdir.runpytest("--save-quarantine", QUARANTINE_PATH)
+
+    assert result.ret == EXIT_USAGEERROR
+    result.stderr.fnmatch_lines(
+        ["ERROR: Could not open quarantine:*{}*".format(QUARANTINE_PATH)]
     )
 
 
@@ -198,7 +215,7 @@ def test_missing_quarantine(testdir):
 
     assert result.ret == EXIT_USAGEERROR
     result.stderr.fnmatch_lines(
-        ["ERROR: Could not open quarantine:*'{}'".format(QUARANTINE_PATH)]
+        ["ERROR: Could not open quarantine:*{}*".format(QUARANTINE_PATH)]
     )
 
 

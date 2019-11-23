@@ -13,6 +13,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import logging
+import os
 from io import open
 
 import attr
@@ -42,16 +43,20 @@ class SaveQuarantinePlugin(object):
     quarantine_count = attr.ib(init=False, default=0)
 
     def pytest_sessionstart(self):
-        """Open the quarantine for writing.
+        """Open the quarantine for writing, creating parent directories if needed.
 
         Results in an empty file if all tests are passing, to remove previously failed
         tests from the quarantine.
         """
         try:
+            dirname = os.path.dirname(os.path.abspath(self.quarantine_path))
+            if not os.path.isdir(dirname):
+                os.makedirs(dirname)
+
             self.quarantine = open(
                 self.quarantine_path, "w", buffering=1, encoding="utf-8"
             )
-        except IOError as exc:
+        except EnvironmentError as exc:
             raise pytest.UsageError("Could not open quarantine: " + str(exc))
 
     def pytest_runtest_logreport(self, report):
@@ -97,7 +102,7 @@ class QuarantinePlugin(object):
         try:
             with open(self.quarantine_path, encoding="utf-8") as f:
                 self.quarantine_ids = {nodeid.strip() for nodeid in f}
-        except IOError as exc:
+        except EnvironmentError as exc:
             raise pytest.UsageError("Could not open quarantine: " + str(exc))
 
     def pytest_itemcollected(self, item):
