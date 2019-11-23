@@ -26,20 +26,21 @@ except AttributeError:
 QUARANTINE_PATH = "quarantine.txt"
 
 
-def test_options_in_help(testdir):
-    result = testdir.runpytest("--help")
+@pytest.fixture
+def testdir(testdir):
+    """Return default testdir fixture with additional helper methods."""
 
-    result.stdout.fnmatch_lines(
-        ["quarantine:", "*--save-quarantine=PATH*", "*--quarantine=PATH*"]
-    )
+    def _path_has_content(path, content):
+        return testdir.tmpdir.join(path).read() == textwrap.dedent(content)
 
+    testdir.path_has_content = _path_has_content
 
-@pytest.mark.parametrize("option", ["--quarantine", "--save-quarantine"])
-def test_options_require_path(option, testdir):
-    result = testdir.runpytest(option)
+    def _write_path(path, content):
+        testdir.tmpdir.join(path).write(textwrap.dedent(content))
 
-    assert result.ret == EXIT_USAGEERROR
-    result.stderr.fnmatch_lines(["*error:*expected one argument"])
+    testdir.write_path = _write_path
+
+    return testdir
 
 
 @pytest.fixture
@@ -65,28 +66,27 @@ def error_failed_passed(testdir):
     )
 
 
+def test_options_in_help(testdir):
+    result = testdir.runpytest("--help")
+
+    result.stdout.fnmatch_lines(
+        ["quarantine:", "*--save-quarantine=PATH*", "*--quarantine=PATH*"]
+    )
+
+
+@pytest.mark.parametrize("option", ["--quarantine", "--save-quarantine"])
+def test_options_require_path(option, testdir):
+    result = testdir.runpytest(option)
+
+    assert result.ret == EXIT_USAGEERROR
+    result.stderr.fnmatch_lines(["*error:*expected one argument"])
+
+
 def test_no_output_without_options(testdir, error_failed_passed):
     result = testdir.runpytest()
 
     assert result.ret == EXIT_TESTSFAILED
     assert QUARANTINE_PATH not in result.stdout.str()
-
-
-@pytest.fixture
-def testdir(testdir):
-    """Return default testdir fixture with additional helper methods."""
-
-    def _path_has_content(path, content):
-        return testdir.tmpdir.join(path).read() == textwrap.dedent(content)
-
-    testdir.path_has_content = _path_has_content
-
-    def _write_path(path, content):
-        testdir.tmpdir.join(path).write(textwrap.dedent(content))
-
-    testdir.write_path = _write_path
-
-    return testdir
 
 
 @pytest.mark.parametrize("quarantine_path", [QUARANTINE_PATH, "reports/quarantine.txt"])
