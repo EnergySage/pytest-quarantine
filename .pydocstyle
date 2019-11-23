@@ -1,7 +1,7 @@
 [pydocstyle]
 add-ignore =
     D100,  # Missing docstring in public module
-    D104,   # Missing docstring in public package
+    D104,  # Missing docstring in public package
     D107,  # Missing docstring in __init__
     D202,  # No blank lines allowed after function docstring
     D413,  # Missing blank line after last section
