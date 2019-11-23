@@ -27,6 +27,39 @@ def _item_count(count):
     return "{} item{}".format(count, "" if count == 1 else "s")
 
 
+def pytest_addoption(parser):
+    """Add command line options to the 'quarantine' group."""
+    group = parser.getgroup("quarantine")
+
+    group.addoption(
+        "--save-quarantine",
+        metavar="PATH",
+        help="Write failing test ID's to %(metavar)s",
+    )
+
+    group.addoption(
+        "--quarantine",
+        metavar="PATH",
+        help="Mark test ID's listed in %(metavar)s with `xfail`",
+    )
+
+
+def pytest_configure(config):
+    """Register the plugin functionality."""
+    save_quarantine_path = config.getoption("save_quarantine")
+    if save_quarantine_path:
+        config.pluginmanager.register(
+            SaveQuarantinePlugin(save_quarantine_path), "save_quarantine"
+        )
+
+    use_quarantine_path = config.getoption("quarantine")
+    if use_quarantine_path:
+        verbose = config.getoption("verbose")
+        config.pluginmanager.register(
+            UseQuarantinePlugin(use_quarantine_path, verbose), "use_quarantine"
+        )
+
+
 @attr.s(cmp=False)
 class SaveQuarantinePlugin(object):
     """Save the list of failing tests to a quarantine file.
@@ -82,7 +115,7 @@ class SaveQuarantinePlugin(object):
 
 
 @attr.s(cmp=False)
-class QuarantinePlugin(object):
+class UseQuarantinePlugin(object):
     """Mark each test listed in a quarantine file as xfail.
 
     Attributes:
@@ -119,36 +152,3 @@ class QuarantinePlugin(object):
                 _item_count(len(self.quarantine_ids)),
                 self.quarantine_path,
             )
-
-
-def pytest_configure(config):
-    """Register the plugin functionality."""
-    save_quarantine_path = config.getoption("save_quarantine")
-    if save_quarantine_path:
-        config.pluginmanager.register(
-            SaveQuarantinePlugin(save_quarantine_path), "save_quarantine_plugin"
-        )
-
-    quarantine_path = config.getoption("quarantine")
-    if quarantine_path:
-        config.pluginmanager.register(
-            QuarantinePlugin(quarantine_path, config.getoption("verbose")),
-            "quarantine_plugin",
-        )
-
-
-def pytest_addoption(parser):
-    """Add command line options to the 'quarantine' group."""
-    group = parser.getgroup("quarantine")
-
-    group.addoption(
-        "--save-quarantine",
-        metavar="PATH",
-        help="Write failing test ID's to %(metavar)s",
-    )
-
-    group.addoption(
-        "--quarantine",
-        metavar="PATH",
-        help="Mark test ID's listed in %(metavar)s with `xfail`",
-    )
