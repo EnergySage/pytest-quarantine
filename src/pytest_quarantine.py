@@ -56,7 +56,7 @@ class SaveQuarantinePlugin(object):
             self.quarantine = open(
                 self.quarantine_path, "w", buffering=1, encoding="utf-8"
             )
-        except IOError as exc:
+        except EnvironmentError as exc:
             raise pytest.UsageError("Could not open quarantine: " + str(exc))
 
     def pytest_runtest_logreport(self, report):
@@ -102,7 +102,7 @@ class QuarantinePlugin(object):
         try:
             with open(self.quarantine_path, encoding="utf-8") as f:
                 self.quarantine_ids = {nodeid.strip() for nodeid in f}
-        except IOError as exc:
+        except EnvironmentError as exc:
             raise pytest.UsageError("Could not open quarantine: " + str(exc))
 
     def pytest_itemcollected(self, item):
