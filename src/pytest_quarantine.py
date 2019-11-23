@@ -13,7 +13,7 @@ from __future__ import division
 from __future__ import unicode_literals
 
 import logging
-import os.path
+import os
 from io import open
 
 import attr
