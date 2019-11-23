@@ -5,18 +5,24 @@ failures on future test runs.
 
 Inspired by:
     - https://github.com/pytest-dev/pytest/blob/master/src/_pytest/cacheprovider.py
+    - https://github.com/pytest-dev/pytest-reportlog/blob/master/src/pytest_reportlog/plugin.py
     - https://github.com/hackebrot/pytest-md/blob/master/src/pytest_md/plugin.py
-"""
+"""  # noqa: E501
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals
+
+import logging
+from io import open
 
 import attr
 import pytest
 
 
-def _item_count(nodeids):
-    count = len(nodeids)
+logger = logging.getLogger(__name__)
+
+
+def _item_count(count):
     return "{} item{}".format(count, "" if count == 1 else "s")
 
 
@@ -26,35 +32,48 @@ class SaveQuarantinePlugin(object):
 
     Attributes:
         quarantine_path (str): The path to the quarantine file
-        quarantine_ids (Set[int]):
-            The ID's of failed tests to write to ``quarantine_path``
+        quarantine (IO[str]): The opened quarantine file
+        quarantine_count (int]):
+            The number of failed tests written to ``quarantine_path``
     """
 
     quarantine_path = attr.ib()
-    quarantine_ids = attr.ib(init=False, factory=set)
+    quarantine = attr.ib(init=False, default=None)
+    quarantine_count = attr.ib(init=False, default=0)
+
+    def pytest_sessionstart(self):
+        """Open the quarantine for writing.
+
+        Results in an empty file if all tests are passing, to remove previously failed
+        tests from the quarantine.
+        """
+        try:
+            self.quarantine = open(
+                self.quarantine_path, "w", buffering=1, encoding="utf-8"
+            )
+        except IOError as exc:
+            raise pytest.UsageError("Could not open quarantine: " + str(exc))
 
     def pytest_runtest_logreport(self, report):
         """Save the ID of a failed test to the quarantine."""
         if report.failed:
-            self.quarantine_ids.add(report.nodeid)
+            self.quarantine.write(report.nodeid + "\n")
+            self.quarantine_count += 1
 
     def pytest_terminal_summary(self, terminalreporter):
         """Display size of quarantine after running tests."""
         terminalreporter.write_sep(
             "-",
             "{} saved to {}".format(
-                _item_count(self.quarantine_ids), self.quarantine_path
+                _item_count(self.quarantine_count), self.quarantine_path
             ),
         )
 
-    def pytest_sessionfinish(self, session):
-        """Write the ID's of quarantined tests to a file.
-
-        Writes an empty file if all tests are passing, to remove previously failed tests
-        from the quarantine.
-        """
-        with open(self.quarantine_path, "w") as f:
-            f.writelines(nodeid + "\n" for nodeid in sorted(self.quarantine_ids))
+    def pytest_unconfigure(self):
+        """Close the quarantine."""
+        if self.quarantine:
+            self.quarantine.close()
+            logger.debug("Closed " + self.quarantine_path)
 
 
 @attr.s(cmp=False)
@@ -76,10 +95,10 @@ class QuarantinePlugin(object):
     def pytest_sessionstart(self, session):
         """Read test ID's from a file into the quarantine."""
         try:
-            with open(self.quarantine_path) as f:
+            with open(self.quarantine_path, encoding="utf-8") as f:
                 self.quarantine_ids = {nodeid.strip() for nodeid in f}
         except IOError as exc:
-            raise pytest.UsageError("Could not load quarantine: " + str(exc))
+            raise pytest.UsageError("Could not open quarantine: " + str(exc))
 
     def pytest_itemcollected(self, item):
         """Mark a test as xfail if its ID is in the quarantine."""
@@ -92,7 +111,7 @@ class QuarantinePlugin(object):
         if self.verbose >= 0:
             return "added mark.xfail to {} of {} from {}".format(
                 len(self.marked_ids),
-                _item_count(self.quarantine_ids),
+                _item_count(len(self.quarantine_ids)),
                 self.quarantine_path,
             )
 

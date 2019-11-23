@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import unicode_literals
 
+import logging
 import textwrap
 
 import pytest
@@ -9,11 +10,17 @@ import pytest
 try:
     EXIT_OK = pytest.ExitCode.OK
     EXIT_TESTSFAILED = pytest.ExitCode.TESTS_FAILED
+    EXIT_INTERNALERROR = pytest.ExitCode.INTERNAL_ERROR
     EXIT_USAGEERROR = pytest.ExitCode.USAGE_ERROR
 except AttributeError:
     # ExitCode was introduced in pytest 5.0.0. As long as we support pytest 4.6 (for
     # Python 2), use the private constants for readability.
-    from _pytest.main import EXIT_OK, EXIT_TESTSFAILED, EXIT_USAGEERROR  # noqa: F401
+    from _pytest.main import (
+        EXIT_OK,
+        EXIT_TESTSFAILED,
+        EXIT_INTERNALERROR,
+        EXIT_USAGEERROR,
+    )
 
 QUARANTINE_PATH = "quarantine.txt"
 
@@ -158,12 +165,40 @@ def test_save_empty_quarantine(testdir):
     assert testdir.path_has_content(QUARANTINE_PATH, "")
 
 
+def test_save_always_closes_quarantine(caplog, testdir):
+    caplog.set_level(logging.DEBUG)
+
+    testdir.makeconftest(
+        """\
+        def pytest_runtestloop():
+            raise Exception()
+        """
+    )
+
+    result = testdir.runpytest("--save-quarantine", QUARANTINE_PATH)
+
+    assert result.ret == EXIT_INTERNALERROR
+    assert "Closed " + QUARANTINE_PATH in caplog.text
+
+
+def test_save_dir_error(testdir, error_failed_passed):
+    quarantine_path = "quarantine"
+    testdir.mkdir(quarantine_path)
+
+    result = testdir.runpytest("--save-quarantine", quarantine_path)
+
+    assert result.ret == EXIT_USAGEERROR
+    result.stderr.fnmatch_lines(
+        ["ERROR: Could not open quarantine:*'{}'".format(quarantine_path)]
+    )
+
+
 def test_missing_quarantine(testdir):
     result = testdir.runpytest("--quarantine", QUARANTINE_PATH)
 
     assert result.ret == EXIT_USAGEERROR
     result.stderr.fnmatch_lines(
-        ["ERROR: Could not load quarantine:*'{}'".format(QUARANTINE_PATH)]
+        ["ERROR: Could not open quarantine:*'{}'".format(QUARANTINE_PATH)]
     )
 
 
