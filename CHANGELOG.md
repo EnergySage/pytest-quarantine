@@ -8,11 +8,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
-- Require quarantine path on command line ([#30](https://github.com/EnergySage/pytest-quarantine/issues/30))
+- Require quarantine path on command line ([#30](https://github.com/EnergySage/pytest-quarantine/pull/30))
+- Write quarantine during test run ([#35](https://github.com/EnergySage/pytest-quarantine/pull/35))
+- Create parent directories for --save-quarantine ([#36](https://github.com/EnergySage/pytest-quarantine/pull/36))
+- Reorganize plugin ([#37](https://github.com/EnergySage/pytest-quarantine/pull/37))
 
 ### Fixed
 
 - --save-quarantine can overwrite test files ([#29](https://github.com/EnergySage/pytest-quarantine/issues/29))
+- Verify --save-quarantine path before test run ([#31](https://github.com/EnergySage/pytest-quarantine/issues/31))
 
 ## [1.2.0] - 2019-11-13
 
